@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
 const env = process.env.NODE_ENV;
-const pPath = (env === 'production' ? "/mebel/" : "/");
-const webfontsPath = (env === 'production' ? '/mebel/webfonts' : '../webfonts');
+const pPath = ("./");
+const webfontsPath = ('./webfonts');
 const sourceMap = (env === 'production' ? true : false );
 
 
@@ -41,7 +41,7 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          env == 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
