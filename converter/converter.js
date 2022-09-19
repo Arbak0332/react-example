@@ -71,6 +71,8 @@ data.map(async (item) => {
 
             if (item.product_specifications.length == 0) // is empty
                 return
+
+            item.product_specifications = JSON.stringify(item.product_specifications)
         }
         catch (error) {
             return
