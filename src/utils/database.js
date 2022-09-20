@@ -28,7 +28,7 @@ const init = async () => {
     if (isExistResult.rows[0].exists === false) {    
 
         console.error(`Table of products doesnt exist. I suggest you to create and populate table manuall using 'npm run converter'.`)
-    }y
+    }
 }
 
 

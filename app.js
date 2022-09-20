@@ -8,12 +8,18 @@ const database = require('./src/utils/database')
 
 // middleware
 
+app.use(express.json())
 
 // routes
 
 app.get('/', (req, res) => {
     res.send('Hello')
 })
+
+const productRouter = require('./src/product/routes')
+
+app.use('/api/v1/products', productRouter)
+
 
 // error handler
 
