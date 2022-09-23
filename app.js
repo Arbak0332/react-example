@@ -3,7 +3,7 @@ require('express-async-errors');
 const express = require('express')
 const app = express()
 
-const database = require('./src/utils/database')
+const database = require('./src/utils/database/connection')
 
 
 // middleware
@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
     res.send('Hello')
 })
 
-const productRouter = require('./src/product/routes')
+const productRouter = require('./src/products/productRoutes')
 
 app.use('/api/v1/products', productRouter)
 
