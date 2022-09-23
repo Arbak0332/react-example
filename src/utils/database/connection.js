@@ -1,5 +1,5 @@
 const { Pool } = require('pg')
-const products = require('../../converter/products.json')
+const products = require('../../../converter/products.json')
 
 const pool = new Pool({
     connectionString: process.env.PG_CONNECTION_STRING,
