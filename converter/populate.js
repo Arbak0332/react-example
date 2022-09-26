@@ -1,6 +1,5 @@
-const { query } = require('../src/utils/database')
 const products = require('./products.json')
-
+// TODO rewrite it using knex
 const isExists = `
     SELECT EXISTS (
         SELECT FROM

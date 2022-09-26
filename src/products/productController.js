@@ -1,20 +1,14 @@
-const { query } = require('../utils/database/connection')
+const knex = require('../utils/database')
 const { StatusCodes } = require('http-status-codes')
 
 
 
 
 const getAllProductsStatic = async (req, res) => {
+    const products = await knex.select('*').from('product')
+    console.log(products)
 
-    let products = await query(`
-        SELECT  
-            distinct brand
-        FROM product;
-    `)
-    
-
-
-    // res.status(StatusCodes.OK).json(products)
+    res.status(StatusCodes.OK).send(products)
 }
 
 const getAllProducts = async (req, res) => {
@@ -32,17 +26,11 @@ const getAllProducts = async (req, res) => {
     } = req.query
 
     if (fields) {
-
+        
     }
 
 
-
-    // console.log(await getColumnsName())
-
-    // let products = await query('SELECT * FROM product;')
-    let products = 0;
-
-    res.status(StatusCodes.OK).json(mapToProductEntity(products))
+    res.status(StatusCodes.OK).json()
 }
 
 
@@ -80,19 +68,6 @@ const mapToProductEntity = (queryResult) => {
 
     return entity
 }
-
-const getColumnsName = async () => {
-    const result = await query(`
-        SELECT *
-        FROM product
-        WHERE false; 
-    `)
-
-    return result
-}
-
-
-
 
 
 module.exports = {
