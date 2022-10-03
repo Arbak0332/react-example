@@ -15,7 +15,9 @@ app.get('/', (req, res) => {
 })
 
 const productRouter = require('./src/products/productRoutes')
+const uploadRouter = require('./src/products/upload/uploadRoutes')
 
+app.use('/api/v1/products/upload', uploadRouter)
 app.use('/api/v1/products', productRouter)
 
 
