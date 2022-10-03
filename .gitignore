@@ -4,3 +4,8 @@ node_modules
 public/docs
 products.json
 converter/products.json
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
