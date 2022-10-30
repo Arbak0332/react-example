@@ -3,10 +3,8 @@ require('dotenv').config({ path: '../../../.env' })
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
-
-console.log()
 module.exports = {
-    development: {
+    production: {
         client: 'postgresql',
         connection: {
             host: process.env.AWS_HOST,
@@ -15,9 +13,25 @@ module.exports = {
             password: process.env.AWS_USER_PASSWORD,
             database: process.env.AWS_DATABASE,
         },
+        pool: {
+            min: 2,
+            max: 10
+        }
     },
-    pool: {
-        min: 2,
-        max: 10
-    },
+    development: {
+        client: 'postgresql',
+        connection: {
+            host: 'localhost',
+            port: 5432,
+            user: 'postgres',
+            password: '.',
+            database: 'ecommerce'
+        },
+        seed: {
+            directory: './seeds'
+        },
+        migrations: {
+            directory: './migrations'
+        }
+    }
 };
