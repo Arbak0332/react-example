@@ -4,8 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "migrate": "npx knex migrate:latest --knexfile src/utils/database/knexfile.js"
+    "start": "ENV=development nodemon app.js",
+    "migrate:latest": "npx knex migrate:latest --knexfile src/utils/database/knexfile.js",
+    "migrate:down": "npx knex migrate:down --knexfile src/utils/database/knexfile.js",
+    "seed": "npx knex seed:run --knexfile src/utils/database/knexfile.js ",
+    "fill_with_tests": "ENV=test npx knex seed:run --knexfile src/utils/database/knexfile.js",
+    "test": "npm run fill_with_tests && mocha \"src/**/*.spec.js\" --recursive --exclude src/view/**/*.spec.js --exit"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +26,9 @@
     "uuid": "9.0.0"
   },
   "devDependencies": {
-    "file-system": "1.2.2"
+    "chai": "4.3.6",
+    "chai-http": "4.3.0",
+    "file-system": "1.2.2",
+    "mocha": "10.1.0"
   }
 }
