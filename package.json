@@ -9,9 +9,9 @@
     "migrate:down": "npx knex migrate:down --knexfile src/utils/database/knexfile.js",
     "seed": "npx knex seed:run --knexfile src/utils/database/knexfile.js ",
     "fill_with_tests": "ENV=test npx knex seed:run --knexfile src/utils/database/knexfile.js",
-    "test": "npm run fill_with_tests && mocha \"src/**/*.spec.js\" --recursive --exclude src/view/**/*.spec.js --exit"
+    "test": "PORT=5000 npm run fill_with_tests && mocha \"src/**/*.spec.js\" --recursive --exclude src/view/**/*.spec.js --exit"
   },
-  "author": "",
+  "author": "Wojciech Gos",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "2.1227.0",

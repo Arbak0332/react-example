@@ -30,9 +30,6 @@ const brands = [
 ]
 
 
-/* TODO add constraints to:
-    -rating cannot be greater than 10 and less than 0
-**/
 exports.up = function (knex) {
     return knex.schema.createTable('product', table => {
         table.increments('id').primary()
