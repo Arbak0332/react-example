@@ -11,9 +11,9 @@ chai.use(chaiHttp)
 /********************************* GET PRODUCT *****************************************/
 
 
-describe('/api/v1/products/:id GET product test', () => {
-    
-    it('should respond with status OK', function(done) {
+describe('/api/v1/products/:id GET product ', () => {
+
+    it('should respond with status OK', function (done) {
 
 
         chai.request(app)
@@ -28,7 +28,7 @@ describe('/api/v1/products/:id GET product test', () => {
             })
     })
 
-    it('should respond with status NOT_FOUND', function(done) {
+    it('should respond with status NOT_FOUND', function (done) {
 
 
         chai.request(app)
@@ -70,22 +70,22 @@ describe('/api/v1/products/:id GET product test', () => {
 /********************************* GET ALL PRODUCTS *****************************************/
 
 
-describe('/api/v1/products GET all products test', ()=>{
+describe('/api/v1/products GET all products', () => {
 
-    it('should respond with status OK', function(done){
+    it('should respond with status OK', function (done) {
 
         chai.request(app)
             .get('/api/v1/products')
-            .end((err, res)=>{
+            .end((err, res) => {
 
-                if(err) console.error(err);
+                if (err) console.error(err);
 
                 expect(res.status).to.equal(StatusCodes.OK)
                 done()
             })
     })
 
-    it('should not find any product', function(done) {
+    it('should not find any product', function (done) {
 
         chai.request(app)
             .get('/api/v1/products?name=123')
@@ -99,41 +99,41 @@ describe('/api/v1/products GET all products test', ()=>{
             })
     })
 
-    it('should have 12 products by default', function(done){
+    it('should have 12 products by default', function (done) {
 
         chai.request(app)
             .get('/api/v1/products')
-            .end((err, res)=>{
+            .end((err, res) => {
 
-                if(err) console.error(err);
+                if (err) console.error(err);
 
                 expect(res.body).to.have.lengthOf(12)
                 done()
             })
     })
 
-    it('should have 11 products', function(done){
+    it('should have 11 products', function (done) {
 
         chai.request(app)
             .get('/api/v1/products?limit=11')
-            .end((err, res)=>{
+            .end((err, res) => {
 
-                if(err) console.error(err);
+                if (err) console.error(err);
 
                 expect(res.body).to.have.lengthOf(11)
                 done()
             })
     })
 
-    it('should have find 6 product of type \'Coir\'', function(done){
+    it('should have find 6 product of type \'Coir\'', function (done) {
 
         chai.request(app)
             .get('/api/v1/products?type=Coir')
-            .end((err, res)=>{
+            .end((err, res) => {
 
-                if(err) console.error(err);
+                if (err) console.error(err);
                 const products = res.body
-                products.map(item=>{
+                products.map(item => {
                     expect(item.type).to.be.equal('Coir')
                 })
                 expect(products).to.have.lengthOf(6)
@@ -143,16 +143,16 @@ describe('/api/v1/products GET all products test', ()=>{
     })
 
 
-    it('should have find 1 product of brand \'Lovely\'', function(done) {
+    it('should have find 1 product of brand \'Lovely\'', function (done) {
 
         chai.request(app)
             .get('/api/v1/products?brand=Lovely')
             .end((err, res) => {
 
                 if (err) console.error(err);
-                
+
                 expect(res.body).to.have.lengthOf(1)
-                
+
                 const product = res.body[0]
                 expect(product.brand).to.be.equal('Lovely')
                 done()
@@ -179,7 +179,7 @@ describe('/api/v1/products GET all products test', ()=>{
             .get('/api/v1/products?name=test0')
             .end((err, res) => {
 
-                if (err) console.error(err);    
+                if (err) console.error(err);
 
                 expect(res.body[0].name).to.have.be.equal('test0')
                 done()
@@ -224,7 +224,7 @@ describe('/api/v1/products GET all products test', ()=>{
 
                 const products = res.body
 
-                products.map(item=>{
+                products.map(item => {
                     expect(start_price).to.be.lessThanOrEqual(item.price)
                     start_price = item.price
                 })
@@ -255,3 +255,176 @@ describe('/api/v1/products GET all products test', ()=>{
             })
     })
 })
+
+
+describe('/api/v1/products POST', () => {
+
+    it('should create product', function(done){
+        chai.request(app)
+            .post('/api/v1/products')
+            .send({
+                name:'test13',
+                price:130,
+                image_name:'testimage',
+                description: 'lorem ipsum',
+                rating:10,
+                brand:'Durian',
+                type:'Coir'
+            })
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.CREATED)
+
+                done()
+            })
+    })
+    it('should not create product with invalid type', function (done) {
+        chai.request(app)
+            .post('/api/v1/products')
+            .send({
+                name: 'test',
+                price: 130,
+                image_name: 'testimage',
+                description: 'lorem ipsum',
+                rating: 10,
+                brand: 'Durian',
+                type: 'Coi' // invalid type 
+            })
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                done()
+            })
+    })
+    it('should not create product with empty name', function (done) {
+        chai.request(app)
+            .post('/api/v1/products')
+            .send({
+                name: ' ',
+                price: 130,
+                image_name: 'test_image',
+                description: 'lorem ipsum',
+                rating: 10,
+                brand: 'Durian',
+                type: 'Coir' 
+            })
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                done()
+            })
+    })
+
+    it('should not create product with taken name', function (done) {
+        chai.request(app)
+            .post('/api/v1/products')
+            .send({
+                name: 'test0',
+                price: 130,
+                image_name: 'test_image',
+                description: 'lorem ipsum',
+                rating: 10,
+                brand: 'Durian',
+                type: 'Coir'
+            })
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                done()
+            })
+    })
+
+
+})
+
+describe('/api/v1/products PATCH', () => {
+    it('should update product\' name', function (done) {
+        chai.request(app)
+            .patch('/api/v1/products/1')
+            .send({
+                name: 'TEST123',
+                price: 130,
+                image_name: 'test_image',
+                description: 'lorem ipsum',
+                rating: 10,
+                brand: 'Durian',
+                type: 'Coir'
+            })
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.OK)
+
+                done()
+            })
+    })
+    it('should not update product\' name (is taken)', function (done) {
+        chai.request(app)
+            .patch('/api/v1/products/1')
+            .send({
+                name: 'test1',
+                price: 130,
+                image_name: 'test_image',
+                description: 'lorem ipsum',
+                rating: 10,
+                brand: 'Durian',
+                type: 'Coir'
+            })
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                done()
+            })
+    })
+})
+
+
+describe('/api/v1/products DELETE', () => {
+
+    it('should delete product with id 12', function (done) {
+
+        chai.request(app)
+            .delete('/api/v1/products/12')
+            .end((err, res) => {
+
+                if (err) done(err);
+                
+                expect(res.status).to.be.equal(StatusCodes.OK)
+
+                done()
+            })      
+    })
+
+    it('should not delete product with id 1000 (NOT EXIST)', function (done) {
+
+        chai.request(app)
+            .delete('/api/v1/products/1000')
+            .end((err, res) => {
+
+                if (err) console.error(err);
+
+                expect(res.status).to.be.equal(StatusCodes.NOT_FOUND)
+
+                done()
+            })
+
+    })
+})
+
+
+
