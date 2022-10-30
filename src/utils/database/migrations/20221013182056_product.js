@@ -16,17 +16,32 @@ const types = [
     'Desk Chair'
 ]
 
+const brands = [
+    'FabHomeDecor', 'Alexus',
+    'Bestway', 'induscraft',
+    'Smart Choice Furniture', 'Cello Furniture',
+    'Birdy', 'Durian',
+    'ARRA', 'HomeTown',
+    'Furnstyl', 'RoyalOak',
+    'Intex', 'Stellar',
+    'Art n Beyond', 'Springwel',
+    'Nilkamal', 'ORKA',
+    'Comfort Couch', 'Lovely'
+]
 
+
+/* TODO add constraints to:
+    -rating cannot be greater than 10 and less than 0
+**/
 exports.up = function (knex) {
     return knex.schema.createTable('product', table => {
-        table.increments('id')
+        table.increments('id').primary()
         table.string('name').notNullable()
         table.integer('price').notNullable()
         table.string('image_name').notNullable()
-        table.string('description').notNullable()
+        table.text('description').notNullable()
         table.integer('rating').notNullable()
-        table.string('brand').notNullable()
-        table.json('specification').notNullable()
+        table.enu('brand', brands).notNullable()
         table.enu('type', types).notNullable()
         table.timestamps(true, true)
     })
