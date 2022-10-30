@@ -3,8 +3,17 @@ const knexfile = require('./knexfile')
 
 
 // TODO in prod dont acces knexfile.development directly
-const db = knex(knexfile.development)
+
+if (process.env.ENV === 'production') {
+    module.exports = knex(knexfile.production)
+} 
+else if (process.env.ENV === 'test') {
+    module.exports = knex(knexfile.development)
+}
+else{
+    module.exports = knex(knexfile.development)
+}
 
 
-module.exports = db
+
 
