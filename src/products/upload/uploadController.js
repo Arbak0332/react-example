@@ -18,12 +18,31 @@ const getURL = async (req, res)=>{
         Key : key,
         Expires:60
     })
-    console.log(url)
+    
     res.status(StatusCodes.OK).json({ key: url, name:key })
         
 }
 
+const uploadImage = (buffer, image_name) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Body: buffer,
+            Key: image_name
+        }
+        s3.putObject(params, (err, data) => {
+            if (err)
+                reject(err)
+            else
+                resolve(data)
+        })
+
+
+    })
+}
+
 
 module.exports = {
-    getURL
+    getURL,
+    uploadImage
 }
