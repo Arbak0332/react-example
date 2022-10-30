@@ -131,16 +131,17 @@ const createProduct = async (req, res) => {
         throw new BadRequestError('invalid data')
     }
 
-    res.status(StatusCodes.OK).send('createProduct')
+    res.status(StatusCodes.CREATED).send()
 }
 
 
 const updateProduct = async (req, res) => {
 
-    const result = await knex('product').update({ ...req.body })
+    const result = await knex('product')
+        .update({ ...req.body })
+        .where({id:req.params.id})
 
-
-    res.status(StatusCodes.OK).send('updateProduct')
+    res.status(StatusCodes.OK).send()
 }
 
 const deleteProduct = async (req, res) => {
@@ -150,7 +151,7 @@ const deleteProduct = async (req, res) => {
         throw new NotFoundError('product does not exist')
     }
 
-    res.status(StatusCodes.OK).json({ message: `deleted product with id=${req.params.id}` })
+    res.status(StatusCodes.OK).send()
 
 }
 
