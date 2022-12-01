@@ -21,7 +21,6 @@ const getBase64 = async (link) => {
 
 }
 
-
 const prepareData = async () => {
 
     data.map(async (item) => {
@@ -113,11 +112,13 @@ const prepareData = async () => {
 const writeResult = async () => {
     try {
         fs.writeFile('./converter/products.json', JSON.stringify(result), (err) => {
+
             if (err)
                 console.error(err)
 
             console.log(result.length)
         })
+
     }
     catch (error) {
         console.error(error)
@@ -150,6 +151,7 @@ const run = async () => {
 
 }
 run()
+
 
 
 

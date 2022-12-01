@@ -1,7 +1,9 @@
 require('dotenv').config()
 require('express-async-errors');
+
 const express = require('express')
 const app = express()
+
 
 
 // middleware
@@ -9,6 +11,7 @@ const app = express()
 app.use(express.json())
 
 // routes
+
 
 app.get('/', (req, res) => {
     res.send('Hello')
