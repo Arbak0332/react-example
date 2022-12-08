@@ -50,6 +50,7 @@ exports.up = function (knex) {
             table.string('email', 100).notNullable().checkRegex('/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/')
             table.string('phone').notNullable().checkRegex('[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
             table.string('password').notNullable()
+            table.enu('permission', ['normal', 'admin']).defaultTo('normal').notNullable()
         })
         .createTable('rating', table => {
             table.increments('id').primary()
@@ -70,7 +71,7 @@ exports.up = function (knex) {
             table.integer('user_id').unsigned().notNullable()
             table.integer('address_id').unsigned().notNullable()
             table.date('created_at').notNullable()
-            table.enu('status', ['Wathing', 'Processing', 'Shipped']).defaultTo('Wathing')
+            table.enu('status', ['Wathing', 'Processing', 'Shipped']).defaultTo('Wathing').notNullable()
 
             table.foreign('user_id').references('user.id')
             table.foreign('address_id').references('address.id')
