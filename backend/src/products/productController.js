@@ -1,24 +1,14 @@
-const knex = require('../utils/database')
 const { StatusCodes } = require('http-status-codes')
-const AWS = require('aws-sdk')
 const { NotFoundError, BadRequestError } = require('../utils/error')
+const Product = require('../utils/database/models/product')
+const { Model } = require('objection');
 
-
-
-const getAllProductsStatic = async (req, res) => {
-
-    // const products = await knex.select().from('product')
-    await knex('product').del()
-    
-    res.status(StatusCodes.OK).send(products)
-}
 
 const getAllProducts = async (req, res) => {
-
     const {
-        type,
+        type_id,
         rating,
-        brand,
+        brand_id,
         name,
         price,
         limit, // 12  default
@@ -27,7 +17,8 @@ const getAllProducts = async (req, res) => {
         sort
     } = req.query
 
-    let query = knex('product')
+    let query = Product.query()
+
     const queryObject = {}
 
 
@@ -44,20 +35,20 @@ const getAllProducts = async (req, res) => {
 
     /*****************************WHERE******************************/
 
-    if (type) {
+    if (type_id) {
         query = query.where({
-            type: type
+            type_id: type_id
         })
     }
 
-    if (brand) {
+    if (brand_id) {
         query = query.where({
-            brand: brand
+            brand_id: brand_id
         })
     }
 
     if (name) {
-        query = query.whereILike('name', `%${name}%`)
+        query = query.where('name', 'ilike', `%${name}%`)
     }
 
     if (price) {
@@ -67,22 +58,18 @@ const getAllProducts = async (req, res) => {
     /**********************************SORT*********************************/
 
     if (sort) {
-        query = query.rowNumber('xd', function () {
-            let arr = []
-            sort.split(',').map((item) => {
-                if (item[0] === '-')
-                    arr.push({
-                        column: item.slice(1),
-                        order: 'desc'
-                    })
-                else
-                    arr.push({
-                        column: item,
-                        order: 'asc'
-                    })
+        sort.split(',').map((item) => {
+            let column, order
+            if (item[0] === '-') {
+                column = item.slice(1)
+                order = 'desc'
+            }
+            else {
+                column = item
+                order = 'asc'
+            }
 
-            })
-            this.orderBy(arr)
+            query = query.orderBy(column, order)
         })
     }
 
@@ -113,54 +100,46 @@ const getAllProducts = async (req, res) => {
 
 
 const getProduct = async (req, res) => {
-    const product = await knex('product').where({ id: req.params.id })
+    const product = await Product.query().findById(req.params.id)
 
-    if (product.length == 0) {
-
+    if (!product)
         throw new NotFoundError('product does not exist')
-    }
 
-    res.status(StatusCodes.OK).send(product[0])
+    res.status(StatusCodes.OK).json(product)
 }
 
 const createProduct = async (req, res) => {
 
-    const result = await knex('product').insert({ ...req.body })
+    const product = await Product.query().insert({ ...req.body })
 
-    if (!result) {
-        throw new BadRequestError('invalid data')
+    if (!product) {
+        throw new BadRequestError('Invalid data')
     }
 
-    res.status(StatusCodes.CREATED).send()
+    res.status(StatusCodes.CREATED).json(product)
 }
 
 
 const updateProduct = async (req, res) => {
+    const { id } = req.params;
+    const product = await Product.query().updateAndFetchById(id, { ...req.body })
 
-    const result = await knex('product')
-        .update({ ...req.body })
-        .where({id:req.params.id})
+    if (!product)
+        throw new NotFoundError('Product not found')
 
-    res.status(StatusCodes.OK).send()
+    res.status(StatusCodes.OK).json(product)
 }
 
 const deleteProduct = async (req, res) => {
-    const result = await knex('product').where({ id: req.params.id }).del()
+    const numRowsDeleted = await Product.query().deleteById(req.params.id)
 
-    if (!result) {
-        throw new NotFoundError('product does not exist')
-    }
+    if (numRowsDeleted <= 0)
+        throw new NotFoundError('product not found')
 
-    res.status(StatusCodes.OK).send()
-
+    res.status(StatusCodes.NO_CONTENT).send()
 }
 
-
-
-
-
 module.exports = {
-    getAllProductsStatic,
     getAllProducts,
     getProduct,
     createProduct,
