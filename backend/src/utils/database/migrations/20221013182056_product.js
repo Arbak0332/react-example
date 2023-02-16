@@ -1,45 +1,29 @@
-const types = [
-    'Sofa Bed', 'Chair',
-    'Play Pool', 'Computer Desk',
-    'Standard Shoe Rack', 'Shoe Cabinet',
-    'Collapsible', 'Sofa',
-    'Sectional', 'Outdoor Chair',
-    'Interactive', 'Air Chair',
-    'Water Games', 'Entertainment Unit',
-    'Wine Rack', 'Spring',
-    'Coir', 'Teardrop',
-    'Desk Chair'
-]
-
-const brands = [
-    'FabHomeDecor', 'Alexus',
-    'Bestway', 'induscraft',
-    'Smart Choice Furniture', 'Cello Furniture',
-    'Birdy', 'Durian',
-    'ARRA', 'HomeTown',
-    'Furnstyl', 'RoyalOak',
-    'Intex', 'Stellar',
-    'Art n Beyond', 'Springwel',
-    'Nilkamal', 'ORKA',
-    'Comfort Couch', 'Lovely'
-]
-
 exports.up = function (knex) {
     return knex.schema
+        .createTable('brand', table=>{
+            table.increments('id').primary()
+            table.string('name', 40).notNullable().unique().index()
+        })
+        .createTable('type', table => {
+            table.increments('id').primary()
+            table.string('name', 40).notNullable().unique().index()
+        })
         .createTable('product', table => {
             table.increments('id').primary()
-            table.string('name', 300).notNullable()
+            table.string('name', 300).notNullable().unique()
             table.float('price', 2).unsigned().notNullable()
-            table.string('image_name').notNullable()
+            table.string('image_name',100).notNullable()
             table.text('description').notNullable()
-            table.enu('brand', brands).notNullable()
-            table.enu('type', types).notNullable()
+            table.integer('brand_id').notNullable().unsigned()
+            table.integer('type_id').notNullable().unsigned()
             table.integer('quantity').unsigned().notNullable()
+            table.foreign('brand_id').references('brand.id')
+            table.foreign('type_id').references('type.id')
             table.timestamps(true, true)
         })
         .createTable('user', table => {
             table.increments('id').primary()
-            table.string('first_name', 30).notNullable()
+            table.string('first_name', 50).notNullable()
             table.string('last_name', 50).notNullable()
             table.string('email', 100).notNullable().checkRegex('/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/')
             table.string('password').notNullable()
@@ -59,16 +43,20 @@ exports.up = function (knex) {
             table.string('country', 50).notNullable()
             table.enu('address_type', ['Main', 'Shipping'])
         })
+        .createTable('status', table => {
+            table.increments('id').primary()
+            table.string('name', 50).notNullable()
+        })
         .createTable('order', table => {
             table.increments('id').primary()
             table.integer('user_id').unsigned().notNullable()
             table.integer('address_id').unsigned().notNullable()
             table.date('created_at').notNullable()
-            table.enu('status', ['Wathing', 'Processing', 'Shipped']).defaultTo('Wathing').notNullable()
+            table.integer('status_id').defaultTo(1).notNullable() // default MAIN
 
             table.foreign('user_id').references('user.id')
             table.foreign('address_id').references('address.id')
-
+            table.foreign('status_id').references('status.id')
         })
         .createTable('order_item', table => {
             table.increments('id').primary()
@@ -85,6 +73,8 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
     return knex.schema
+        .dropTableIfExists('brand')
+        .dropTableIfExists('type')
         .dropTableIfExists('order_item')
         .dropTableIfExists('order')
         .dropTableIfExists('rating')
