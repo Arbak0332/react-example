@@ -3,8 +3,7 @@ require('express-async-errors');
 
 const express = require('express')
 const app = express()
-
-
+const setupDatabase = require('./src/utils/database')
 
 // middleware
 
@@ -20,7 +19,6 @@ app.get('/', (req, res) => {
 const productRouter = require('./src/products/productRoutes')
 const uploadRouter = require('./src/products/upload/uploadRoutes')
 
-app.use('/api/v1/products/upload', uploadRouter)
 app.use('/api/v1/products', productRouter)
 
 
@@ -29,9 +27,14 @@ app.use('/api/v1/products', productRouter)
 const errorHandler = require('./src/utils/middleware/errorHandler')
 app.use(errorHandler)
 
-const port = process.env.PORT || 3000
-app.listen(3000, ()=>{
-    console.log(`listening on port ${port}`)
-})
+const port = process.env.PORT || 5000
+
+const start = async () => {
+    setupDatabase()
+    app.listen(port, () => {
+        console.log(`App is listening on port ${port}`)
+    })
+}
+start()
 
 module.exports = app
