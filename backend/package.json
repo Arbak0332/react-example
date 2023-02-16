@@ -9,8 +9,8 @@
     "down": "npx knex migrate:down --knexfile src/utils/database/knexfile.js",
     "rollback": "npx knex migrate:rollback --knexfile src/utils/database/knexfile.js",
     "seed": "npx knex seed:run --knexfile src/utils/database/knexfile.js ",
-    "fill_with_tests": "ENV=test npx knex seed:run --knexfile src/utils/database/knexfile.js",
-    "test": "PORT=5000 npm run fill_with_tests && mocha \"src/**/*.spec.js\" --recursive --exclude src/view/**/*.spec.js --exit"
+    "fill_with_tests": "ENV=test PORT=3000 npx knex seed:run --knexfile src/utils/database/knexfile.js",
+    "test": "PORT=5000 npm run fill_with_tests && PORT=3000 mocha \"src/**/*.spec.js\" --exit"
   },
   "author": "Wojciech Gos",
   "license": "ISC",
