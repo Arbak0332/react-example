@@ -3,6 +3,6 @@ const router = express.Router()
 
 const {getURL} = require('./uploadController')
 
-router.route('').get(getURL)
+router.route('/upload').get(getURL)
 
 module.exports = router
