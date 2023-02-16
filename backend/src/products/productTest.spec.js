@@ -1,4 +1,3 @@
-const knex = require('../utils/database')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const expect = chai.expect
@@ -10,421 +9,400 @@ chai.use(chaiHttp)
 
 /********************************* GET PRODUCT *****************************************/
 
-
-describe('/api/v1/products/:id GET product ', () => {
-
-    it('should respond with status OK', function (done) {
+describe('Product endpoint', () => {
 
 
-        chai.request(app)
-            .get('/api/v1/products/1')
-            .end((err, res) => {
 
-                if (err) console.error(err);
+    describe('/api/v1/products/:id GET product ', () => {
 
-                expect(res.status).to.equal(StatusCodes.OK)
-
-                done()
-            })
-    })
-
-    it('should respond with status NOT_FOUND', function (done) {
+        it('should respond with status OK', function (done) {
 
 
-        chai.request(app)
-            .get('/api/v1/products/1000')
-            .end((err, res) => {
+            chai.request(app)
+                .get('/api/v1/products/1')
+                .end((err, res) => {
 
-                if (err) console.error(err);
+                    if (err) console.error(err);
 
-                expect(res.status).to.equal(StatusCodes.NOT_FOUND)
-                done()
-            })
-    })
+                    expect(res.status).to.equal(StatusCodes.OK)
 
-    it('should have product properties', function done() {
-
-
-        chai.request(app)
-            .get('/api/v1/products/1')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.body).to.have.property('id')
-                expect(res.body).to.have.property('name')
-                expect(res.body).to.have.property('image_name')
-                expect(res.body).to.have.property('description')
-                expect(res.body).to.have.property('rating')
-                expect(res.body).to.have.property('brand')
-                expect(res.body).to.have.property('type')
-                expect(res.body).to.have.property('created_at')
-                expect(res.body).to.have.property('updated_at')
-
-                done()
-            })
-    })
-
-})
-
-/********************************* GET ALL PRODUCTS *****************************************/
-
-
-describe('/api/v1/products GET all products', () => {
-
-    it('should respond with status OK', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.equal(StatusCodes.OK)
-                done()
-            })
-    })
-
-    it('should not find any product', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products?name=123')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.equal(StatusCodes.OK)
-                done()
-
-            })
-    })
-
-    it('should have 12 products by default', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.body).to.have.lengthOf(12)
-                done()
-            })
-    })
-
-    it('should have 11 products', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products?limit=11')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.body).to.have.lengthOf(11)
-                done()
-            })
-    })
-
-    it('should have find 6 product of type \'Coir\'', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products?type=Coir')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-                const products = res.body
-                products.map(item => {
-                    expect(item.type).to.be.equal('Coir')
+                    done()
                 })
-                expect(products).to.have.lengthOf(6)
-                done()
-            })
+        })
+
+        it('should respond with status NOT_FOUND', function (done) {
+
+
+            chai.request(app)
+                .get('/api/v1/products/1000')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.status).to.equal(StatusCodes.NOT_FOUND)
+                    done()
+                })
+        })
+
+        it('should have product properties', function done() {
+
+
+            chai.request(app)
+                .get('/api/v1/products/1')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body).to.have.property('id')
+                    expect(res.body).to.have.property('name')
+                    expect(res.body).to.have.property('image_name')
+                    expect(res.body).to.have.property('description')
+                    expect(res.body).to.have.property('quantity')
+                    expect(res.body).to.have.property('brand_id')
+                    expect(res.body).to.have.property('type_id')
+                    expect(res.body).to.have.property('created_at')
+                    expect(res.body).to.have.property('updated_at')
+
+                    done()
+                })
+        })
 
     })
 
-
-    it('should have find 1 product of brand \'Lovely\'', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products?brand=Lovely')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.body).to.have.lengthOf(1)
-
-                const product = res.body[0]
-                expect(product.brand).to.be.equal('Lovely')
-                done()
-            })
-    })
-
-    it('should have find 3 product on page 3', function (done) {
-
-        chai.request(app)
-            .get('/api/v1/products?limit=5&page=3')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.body).to.have.lengthOf(3)
-                done()
-            })
-    })
+    /********************************* GET ALL PRODUCTS *****************************************/
 
 
-    it('should have product named \'test0\'', function (done) {
+    describe('/api/v1/products GET all products', () => {
 
-        chai.request(app)
-            .get('/api/v1/products?name=test0')
-            .end((err, res) => {
+        it('should respond with status OK', function (done) {
 
-                if (err) console.error(err);
+            chai.request(app)
+                .get('/api/v1/products')
+                .end((err, res) => {
 
-                expect(res.body[0].name).to.have.be.equal('test0')
-                done()
-            })
-    })
+                    if (err) console.error(err);
 
+                    expect(res.status).to.equal(StatusCodes.OK)
+                    done()
+                })
+        })
 
-    it('should have product named \'test0\' with properties name, price rating, id', function (done) {
+        it('should not find any product', function (done) {
 
-        chai.request(app)
-            .get('/api/v1/products?name=test0&fields=name,price,rating,id')
-            .end((err, res) => {
+            chai.request(app)
+                .get('/api/v1/products?name=123')
+                .end((err, res) => {
 
-                if (err) console.error(err);
+                    if (err) console.error(err);
+                    expect(res.body).to.be.empty
+                    expect(res.status).to.equal(StatusCodes.OK)
+                    done()
 
-                expect(res.body[0].name).to.be.equal('test0')
-                expect(res.body[0]).to.have.property('id')
-                expect(res.body[0]).to.have.property('rating')
-                expect(res.body[0]).to.have.property('name')
+                })
+        })
 
-                expect(res.body[0]).to.not.have.property('image_name')
-                expect(res.body[0]).to.not.have.property('description')
-                expect(res.body[0]).to.not.have.property('brand')
-                expect(res.body[0]).to.not.have.property('type')
-                expect(res.body[0]).to.not.have.property('created_at')
-                expect(res.body[0]).to.not.have.property('updated_at')
-                done()
-            })
-    })
+        it('should have 12 products by default', function (done) {
 
-    it('should have 6 product with price less than or equal 5', function (done) {
+            chai.request(app)
+                .get('/api/v1/products')
+                .end((err, res) => {
 
-        chai.request(app)
-            .get('/api/v1/products?price=5')
-            .end((err, res) => {
+                    if (err) console.error(err);
 
-                if (err) console.error(err);
+                    expect(res.body).to.have.lengthOf(12)
+                    done()
+                })
+        })
 
-                expect(res.body).to.have.lengthOf(6)
+        it('should have 11 products', function (done) {
 
-                let start_price = 0
+            chai.request(app)
+                .get('/api/v1/products?limit=11')
+                .end((err, res) => {
 
-                const products = res.body
+                    if (err) console.error(err);
 
-                products.map(item => {
-                    expect(start_price).to.be.lessThanOrEqual(item.price)
-                    start_price = item.price
+                    expect(res.body).to.have.lengthOf(11)
+                    done()
+                })
+        })
+
+        it('should have find 6 product of type \'8\' (Desk)', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?type_id=8')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+                    const products = res.body
+                    products.map(item => {
+                        expect(item.type_id).to.be.equal(8)
+                    })
+                    expect(products).to.have.lengthOf(6)
+                    done()
                 })
 
-                done()
-            })
+        })
+
+
+        it('should have find 1 product of brand \'2\'(Haven Home)', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?brand_id=2')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body).to.have.lengthOf(1)
+
+                    const product = res.body[0]
+                    expect(product.brand_id).to.be.equal(2)
+                    done()
+                })
+        })
+
+        it('should have find 3 product on page 3', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?limit=5&page=3')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body).to.have.lengthOf(3)
+                    done()
+                })
+        })
+
+
+        it('should have product named \'test0\'', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?name=test0')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body[0].name).to.be.equal('test0')
+                    done()
+                })
+        })
+
+
+        it('should have product named \'test0\' with properties name, price id', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?name=test0&fields=name,price,id')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body[0].name).to.be.equal('test0')
+                    expect(res.body[0]).to.have.property('id')
+                    expect(res.body[0]).to.have.property('name')
+
+                    expect(res.body[0]).to.not.have.property('image_name')
+                    expect(res.body[0]).to.not.have.property('description')
+                    expect(res.body[0]).to.not.have.property('brand_id')
+                    expect(res.body[0]).to.not.have.property('type_id')
+                    expect(res.body[0]).to.not.have.property('created_at')
+                    expect(res.body[0]).to.not.have.property('updated_at')
+                    done()
+                })
+        })
+
+        it('should have 6 product with price less than or equal 5', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?price=5')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body).to.have.lengthOf(6)
+
+                    let start_price = 0
+
+                    const products = res.body
+
+                    products.map(item => {
+                        expect(start_price).to.be.lessThanOrEqual(item.price)
+                        start_price = item.price
+                    })
+
+                    done()
+                })
+        })
+
+        it('should have 6 product with price less than or equal 5 and sorted by price descending', function (done) {
+
+            chai.request(app)
+                .get('/api/v1/products?price=5&sort=-price')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.body).to.have.lengthOf(6)
+
+                    let start_price = 5
+                    const products = res.body
+
+                    products.map(item => {
+                        expect(item.price).to.be.lessThanOrEqual(start_price)
+                        start_price = item.price
+                    })
+
+                    done()
+                })
+        })
     })
 
-    it('should have 6 product with price less than or equal 5 and sorted by price descending', function (done) {
 
-        chai.request(app)
-            .get('/api/v1/products?price=5&sort=-price')
-            .end((err, res) => {
+    describe('/api/v1/products POST', () => {
 
-                if (err) console.error(err);
+        it('should create product', function (done) {
+            chai.request(app)
+                .post('/api/v1/products')
+                .send({
+                    name: 'test13',
+                    price: 130,
+                    image_name: 'testimage',
+                    description: 'lorem ipsum',
+                    quantity: 10,
+                    brand_id: 1,
+                    type_id: 1
+                })
+                .end((err, res) => {
 
-                expect(res.body).to.have.lengthOf(6)
+                    if (err) console.error(err);
 
-                let start_price = 5
-                const products = res.body
+                    expect(res.status).to.be.equal(StatusCodes.CREATED)
 
-                products.map(item => {
-                    expect(item.price).to.be.lessThanOrEqual(start_price)
-                    start_price = item.price
+                    done()
+                })
+        })
+        it('should not create product with invalid type', function (done) {
+            chai.request(app)
+                .post('/api/v1/products')
+                .send({
+                    name: 'test',
+                    price: 130,
+                    image_name: 'testimage',
+                    description: 'lorem ipsum',
+                    quantity: 10,
+                    brand_id: 1,
+                    type: 15 // this type does not exist 
+                })
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                    done()
+                })
+        })
+
+        it('should not create product with taken name', function (done) {
+            chai.request(app)
+                .post('/api/v1/products')
+                .send({
+                    name: 'test0',
+                    price: 130,
+                    image_name: 'testimage',
+                    description: 'lorem ipsum',
+                    quantity: 10,
+                    brand_id: 1,
+                    type: 1
+                })
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                    done()
+                })
+        })
+
+
+    })
+
+    describe('/api/v1/products PATCH', () => {
+        it('should update product\' name', function (done) {
+            chai.request(app)
+                .patch('/api/v1/products/1')
+                .send({
+                    name: 'TEST123',
+                    price: 130,
+                    image_name: 'testimage',
+                    description: 'lorem ipsum',
+                    quantity: 10,
+                    brand_id: 1,
+                    type_id: 1
+                })
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.status).to.be.equal(StatusCodes.OK)
+                    expect(res.body.name).to.be.equal('TEST123')
+                    done()
+                })
+        })
+        it('should not update product\' name (is taken)', function (done) {
+            chai.request(app)
+                .patch('/api/v1/products/1')
+                .send({
+                    name: 'test1',
+                    price: 130,
+                    image_name: 'test_image',
+                    description: 'lorem ipsum',
+                    rating: 10,
+                    brand: 'Durian',
+                    type: 'Coir'
+                })
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
+
+                    done()
+                })
+        })
+    })
+
+
+    describe('/api/v1/products DELETE', () => {
+
+        it('should delete product with id 12', function (done) {
+
+            chai.request(app)
+                .delete('/api/v1/products/12')
+                .end((err, res) => {
+
+                    if (err) done(err);
+
+                    expect(res.status).to.be.equal(StatusCodes.NO_CONTENT)
+
+                    done()
+                })
+        })
+
+        it('should not delete product with id 1000 (NOT EXIST)', function (done) {
+
+            chai.request(app)
+                .delete('/api/v1/products/1000')
+                .end((err, res) => {
+
+                    if (err) console.error(err);
+
+                    expect(res.status).to.be.equal(StatusCodes.NOT_FOUND)
+
+                    done()
                 })
 
-                done()
-            })
+        })
     })
 })
-
-
-describe('/api/v1/products POST', () => {
-
-    it('should create product', function(done){
-        chai.request(app)
-            .post('/api/v1/products')
-            .send({
-                name:'test13',
-                price:130,
-                image_name:'testimage',
-                description: 'lorem ipsum',
-                rating:10,
-                brand:'Durian',
-                type:'Coir'
-            })
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.CREATED)
-
-                done()
-            })
-    })
-    it('should not create product with invalid type', function (done) {
-        chai.request(app)
-            .post('/api/v1/products')
-            .send({
-                name: 'test',
-                price: 130,
-                image_name: 'testimage',
-                description: 'lorem ipsum',
-                rating: 10,
-                brand: 'Durian',
-                type: 'Coi' // invalid type 
-            })
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
-
-                done()
-            })
-    })
-    it('should not create product with empty name', function (done) {
-        chai.request(app)
-            .post('/api/v1/products')
-            .send({
-                name: ' ',
-                price: 130,
-                image_name: 'test_image',
-                description: 'lorem ipsum',
-                rating: 10,
-                brand: 'Durian',
-                type: 'Coir' 
-            })
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
-
-                done()
-            })
-    })
-
-    it('should not create product with taken name', function (done) {
-        chai.request(app)
-            .post('/api/v1/products')
-            .send({
-                name: 'test0',
-                price: 130,
-                image_name: 'test_image',
-                description: 'lorem ipsum',
-                rating: 10,
-                brand: 'Durian',
-                type: 'Coir'
-            })
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
-
-                done()
-            })
-    })
-
-
-})
-
-describe('/api/v1/products PATCH', () => {
-    it('should update product\' name', function (done) {
-        chai.request(app)
-            .patch('/api/v1/products/1')
-            .send({
-                name: 'TEST123',
-                price: 130,
-                image_name: 'test_image',
-                description: 'lorem ipsum',
-                rating: 10,
-                brand: 'Durian',
-                type: 'Coir'
-            })
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.OK)
-
-                done()
-            })
-    })
-    it('should not update product\' name (is taken)', function (done) {
-        chai.request(app)
-            .patch('/api/v1/products/1')
-            .send({
-                name: 'test1',
-                price: 130,
-                image_name: 'test_image',
-                description: 'lorem ipsum',
-                rating: 10,
-                brand: 'Durian',
-                type: 'Coir'
-            })
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.BAD_REQUEST)
-
-                done()
-            })
-    })
-})
-
-
-describe('/api/v1/products DELETE', () => {
-
-    it('should delete product with id 12', function (done) {
-
-        chai.request(app)
-            .delete('/api/v1/products/12')
-            .end((err, res) => {
-
-                if (err) done(err);
-                
-                expect(res.status).to.be.equal(StatusCodes.OK)
-
-                done()
-            })      
-    })
-
-    it('should not delete product with id 1000 (NOT EXIST)', function (done) {
-
-        chai.request(app)
-            .delete('/api/v1/products/1000')
-            .end((err, res) => {
-
-                if (err) console.error(err);
-
-                expect(res.status).to.be.equal(StatusCodes.NOT_FOUND)
-
-                done()
-            })
-
-    })
-})
-
-
-
