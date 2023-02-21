@@ -1,6 +1,6 @@
 const { StatusCodes } = require('http-status-codes')
-const { NotFoundError, BadRequestError } = require('../utils/error')
-const Product = require('../utils/database/models/product')
+const { NotFoundError, BadRequestError } = require('../../../utils/error')
+const Product = require('../../utils/database/models/product')
 const { Model } = require('objection');
 
 

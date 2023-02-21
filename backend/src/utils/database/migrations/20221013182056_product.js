@@ -21,20 +21,6 @@ exports.up = function (knex) {
             table.foreign('type_id').references('type.id')
             table.timestamps(true, true)
         })
-        .createTable('user', table => {
-            table.increments('id').primary()
-            table.string('first_name', 50).notNullable()
-            table.string('last_name', 50).notNullable()
-            table.string('email', 100).notNullable().checkRegex('/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/')
-            table.string('password').notNullable()
-            table.enu('permission', ['normal', 'admin']).defaultTo('normal').notNullable()
-        })
-        .createTable('rating', table => {
-            table.increments('id').primary()
-            table.integer('rate').notNullable().checkBetween([0, 10])
-            table.integer('user_id').unsigned().notNullable()
-            table.foreign('user_id').references('user.id')
-        })
         .createTable('address', table => {
             table.increments('id').primary()
             table.string('street', 100).notNullable()
@@ -43,9 +29,27 @@ exports.up = function (knex) {
             table.string('country', 50).notNullable()
             table.enu('address_type', ['Main', 'Shipping'])
         })
-        .createTable('status', table => {
+        .createTable('user', table => {
             table.increments('id').primary()
-            table.string('name', 50).notNullable()
+            table.string('first_name', 50).notNullable()
+            table.string('last_name', 50).notNullable()
+            table.string('email', 100).notNullable().checkRegex('/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/')
+            table.string('password').notNullable()
+            table.integer('address_id').unsigned().notNullable()
+            table.enu('permission', ['normal', 'admin']).defaultTo('normal').notNullable()
+            table.foreign('address_id').references('address.id')
+        })
+        .createTable('rating', table => {
+            table.increments('id').primary()
+            table.integer('rate').notNullable().checkBetween([1, 5])
+            table.integer('user_id').unsigned().notNullable()
+            table.integer('product_id').unsigned().notNullable()
+            table.foreign('user_id').references('user.id')
+            table.foreign('product_id').references('product.id')
+        })
+        .createTable('status_static', table => {
+            table.increments('id').primary()
+            table.string('name', 50).notNullable()  // 'Watching, Processing, Shipped'
         })
         .createTable('order', table => {
             table.increments('id').primary()

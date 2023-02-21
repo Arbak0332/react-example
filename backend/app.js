@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
     res.send('Hello')
 })
 
-const productRouter = require('./src/products/productRoutes')
-const uploadRouter = require('./src/products/upload/uploadRoutes')
+const productRouter = require('./src/product-related/routes')
+
 
 app.use('/api/v1/products', productRouter)
 
