@@ -3,11 +3,11 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-
+const { Configuration } = require('webpack-dev-server')
 const env = process.env.NODE_ENV;
 const pPath = ("./");
 const webfontsPath = ('./webfonts');
-const sourceMap = (env === 'production' ? true : false );
+const sourceMap = (env === 'production' ? true : false);
 
 
 module.exports = {
@@ -16,90 +16,94 @@ module.exports = {
   mode: env,
 
   output: {
-    path: path.resolve(__dirname, 'docs'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'js/[name].bundle.js',
-    publicPath: pPath
+    clean: true
   },
-
-  devServer: {
-    static: [
-      {
-        directory: path.join(__dirname, 'public'),
-        watch: true,
-      }
-    ],
-    port: 5000
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
   },
 
   module: {
     rules: [
+      // Sass files
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: 'babel-loader'
-      },
-      {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.s[ac]ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
+      },
+      // Bootstrap CSS files
+      {
+        test: /bootstrap\.css$/,
+        use: [
+          env == 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          env == 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               sourceMap: sourceMap,
             },
           },
-          {
-            loader: 'sass-sourcemap-loader',
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: sourceMap,
-            },
-          },
         ]
       },
+
+
+
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        include: path.resolve(__dirname, './node_modules/bootstrap-icons/font/fonts'),
-        use: {
-            loader: 'file-loader',
-            options: {
-                name: '[name].[ext]',
-                outputPath: 'webfonts',
-                publicPath: webfontsPath,
-            },
-        }
-      },
-      {
-        test: /\.(png|jpe?g)$/,
+        test: /\.html$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'raw-loader',
             options: {
-                name: '[name][contenthash:4].[ext]',
-                outputPath: 'images'
-            }
-        },
-        {
-            loader: "image-webpack-loader",
+              esModule: false,
+            },
+          },
+          {
+            loader: 'extract-loader',
+          },
+          {
+            loader: 'html-loader',
             options: {
-                mozjpeg: {
-                    quality: 100,
-                    progressive: true
-                }
-            }
+              sources: {
+                list: [
+                  {
+                    tag: 'script',
+                    attribute: 'src',
+                    type: 'src',
+                  },
+                  {
+                    tag: 'link',
+                    attribute: 'href',
+                    type: 'src',
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
 
-        }
-        ]
-      }
-    ]
+    ],
   },
+
 
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/templates/index.html',
-      filename: 'index.html'
+      filename: 'index.html',
+      inject:true
     }),
     new HtmlWebpackPlugin({
       template: './src/templates/about.html',
@@ -122,22 +126,22 @@ module.exports = {
       filename: 'account.html'
     }),
     new HtmlWebpackPlugin({
-      template: './src/templates/whitechair1.html',
-      filename: 'whitechair1.html'
+      template: './src/templates/product_details.html',
+      filename: 'product_details.html'
     }),
 
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "[name].css",
+      filename: "index.css",
       chunkFilename: "[id].css"
     }),
     new CopyPlugin({
       patterns: [
-          { from: 'src/assets/images', to: 'images' }
+        { from: 'src/assets/images', to: 'images' }
       ]
-  }),
+    }),
 
   ]
 };
