@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 function filter(){
     // Get all elements with class "collapse"
     const collapses = document.querySelectorAll(".collapse");

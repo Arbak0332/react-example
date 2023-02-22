@@ -28,6 +28,12 @@ module.exports = {
 
   module: {
     rules: [
+      // js files
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      },
       // Sass files
       {
         test: /\.s[ac]ss$/i,
