@@ -9,7 +9,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --open --progress",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --progress",
     "build": "cross-env NODE_ENV=production webpack "
   },
   "keywords": [
@@ -38,6 +38,7 @@
     "node-sass": "8.0.0",
     "raw-loader": "4.0.2",
     "sass-loader": "13.2.0",
+    "script-loader": "0.7.2",
     "style-loader": "3.3.1",
     "webpack": "5.75.0",
     "webpack-cli": "5.0.1",

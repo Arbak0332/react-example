@@ -6,7 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>MEBEL</title>
+  <script referrerpolicy="no-referrer-when-downgrade" src="https://accounts.google.com/gsi/client" async defer></script>
+
 </head>
+
 
 <body>
   <header>
@@ -102,8 +105,41 @@
     <div class="row mx-0 mb-7">
       <div class="col-md-6 px-md-7 d-flex flex-column">
         <h4 class="mb-5 font-weight-light">Sign In</h4>
-        <button class="btn-login-social mb-4 py-3 px-2 px-md-5 d-flex justify-content-start"><span class="mr-5"><i
-              class="bi text-white bi-google"></i></span>Sign in via Google</button>
+        <!-- google register -->
+
+        <div id="g_id_onload" data-client_id="386787584274-8s2rvfvh6fou457jrms0u3dh8j9ajb1j.apps.googleusercontent.com"
+          data-context="signin" data-ux_mode="redirect" data-login_uri="http://localhost:5000/api/v1/users/auth/google"
+          data-callback="handleGoogleAuth" data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+          data-text="signin_with," data-size="large" data-logo_alignment="left">
+        </div>
+
+        <script>
+          // window.onload = function () {
+          //   google.accounts.id.initialize({
+          //     client_id: '386787584274-8s2rvfvh6fou457jrms0u3dh8j9ajb1j.apps.googleusercontent.com',
+          //     callback: handleGoogleAuth
+          //   });
+          //   google.accounts.id.prompt();
+          // };
+
+          function handleGoogleAuth(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            // const responsePayload = decodeJwtResponse(response.credential);
+            console.log(response.credential)
+            // console.log("ID: " + responsePayload.sub);
+            // console.log('Full Name: ' + responsePayload.name);
+            // console.log('Given Name: ' + responsePayload.given_name);
+            // console.log('Family Name: ' + responsePayload.family_name);
+            // console.log("Image URL: " + responsePayload.picture);
+            // console.log("Email: " + responsePayload.email);
+          }
+
+        </script>
+
         <button class="btn-login-social mb-4 py-3 px-2 px-md-5 d-flex justify-content-start"><span class="mr-5"><i
               class="bi text-white bi-facebook"></i></span>Sign in via Facebook</button>
         <div class="separator">
@@ -121,7 +157,7 @@
             <input type="password" class="form-control border-bottom" id="passwordInput">
           </div>
           <a href="#" class="d-flex justify-content-end font-size-small mb-4" data-toggle="modal"
-            data-target="#forgottenPassword">Forgotten Passowrd?</a>
+            data-target="#forgottenPassword">Forgotten Password?</a>
           <!-- sign in -->
           <button type="submit" class="btn btn-secondary btn-signin">Sign In</button>
         </form>

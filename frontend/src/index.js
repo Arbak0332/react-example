@@ -2,13 +2,12 @@ import '../src/sass/index.sass';
 import 'bootstrap/dist/js/bootstrap';
 import { signMeOutInit } from './tools/signOutAlert';
 import { filter } from './tools/filter'
-
-
-
+import { sign_in } from "./tools/sign_in";
 /******************** init **********************/
 
 signMeOutInit();
 filter();
+sign_in()
 
 
 

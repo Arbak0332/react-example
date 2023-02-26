@@ -14,7 +14,12 @@ module.exports = {
   entry: './src/index.js',
 
   mode: env,
-
+  externals: {
+    'google-signin-client': 'gapi.auth2'
+  },
+  // devServer : {
+  //   port: 5000
+  // },
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'js/[name].bundle.js',
@@ -28,12 +33,6 @@ module.exports = {
 
   module: {
     rules: [
-      // js files
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: 'babel-loader'
-      },
       // Sass files
       {
         test: /\.s[ac]ss$/i,
