@@ -7,6 +7,17 @@ class User extends Model {
     static get tableName() {
         return "user";
     }
+
+    mapToUserWithLowPrivileges(){
+        console.log(this)
+    }
+    mapToOwner(){
+
+    }
+    mapToUserWithHighPriviliges(){
+
+    }
+
     async $beforeInsert(queryContext) {
         await super.$beforeInsert(queryContext);
         const salt = await bcrypt.genSalt(10)

@@ -68,7 +68,7 @@ exports.up = function (knex) {
         })
         .createTable('oauth2_user', table => {
             table.increments('id').primary()
-            table.integer('user_id')
+            table.integer('user_id').index()
             table.text('token').notNullable()
 
             table.foreign('address_id').references('address.id')
@@ -109,16 +109,16 @@ exports.up = function (knex) {
 
 };
 
-
+// TODO cannot drop 
 exports.down = function (knex) {
     return knex.schema
+        .dropTableIfExists('product')
         .dropTableIfExists('brand')
         .dropTableIfExists('type')
         .dropTableIfExists('order_item')
         .dropTableIfExists('order')
         .dropTableIfExists('rating')
         .dropTableIfExists('address')
-        .dropTableIfExists('product')
         .dropTableIfExists('user')
         .dropTableIfExists('access')
         .dropTableIfExists('permission')

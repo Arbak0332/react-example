@@ -8,7 +8,13 @@ const googleSignIn = async (req, res) =>{
 }
 
 const register = async (req, res) =>{
+    const user = await User.query().insert({ ...req.body })
 
+    if (!user)
+        throw new BadRequestError('Invalid data.')
+
+    const token = user.createJWT()
+    res.status(StatusCodes.CREATED).json({ token: token })
 }
 
 module.exports = {
