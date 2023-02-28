@@ -24,10 +24,20 @@ resources [
     { 8 : 'user' },
 ]
 */
+const Access = require('../models/access')
+const { Model } = require('objection')
 
 const accesses = [
     // consumer
-
+    {role_id: 1, permission_id: 1, resource_id: 1},
 
     //
 ]
+exports.seed = async function (knex) {
+    Model.knex(knex);
+
+    await Access.query().insert(accesses)
+};
+
+
+
