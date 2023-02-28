@@ -22,13 +22,18 @@ exports.up = function (knex) {
             table.foreign('type_id').references('type.id')
             table.timestamps(true, true)
         })
+        .createTable('address_type', table=>{
+            table.increments('id').primary()
+            table.string('name', 30).notNullable() // Main, Shipping
+        })
         .createTable('address', table => {
             table.increments('id').primary()
             table.string('street', 100).notNullable()
             table.string('city', 50).notNullable()
             table.string('post_code', 20).notNullable()
-            table.string('country', 50).notNullable()
-            table.enu('address_type', ['Main', 'Shipping'])
+            table.integer('address_type_id').unsigned().notNullable()
+
+            table.foreign('address_type_id').references('address_type.id')
         })
         /************************* permission managment tables **********************/
         .createTable('role', table =>{
@@ -71,7 +76,7 @@ exports.up = function (knex) {
             table.integer('user_id').index()
             table.text('token').notNullable()
 
-            table.foreign('address_id').references('address.id')
+            table.foreign('user_id').references('user.id')
         })
         .createTable('rating', table => {
             table.increments('id').primary()
@@ -109,17 +114,18 @@ exports.up = function (knex) {
 
 };
 
-// TODO cannot drop 
 exports.down = function (knex) {
     return knex.schema
+        .dropTableIfExists('status_static')
+        .dropTableIfExists('order_item')
+        .dropTableIfExists('rating')
         .dropTableIfExists('product')
         .dropTableIfExists('brand')
         .dropTableIfExists('type')
-        .dropTableIfExists('order_item')
         .dropTableIfExists('order')
-        .dropTableIfExists('rating')
-        .dropTableIfExists('address')
+        .dropTableIfExists('oauth2_user')
         .dropTableIfExists('user')
+        .dropTableIfExists('address')
         .dropTableIfExists('access')
         .dropTableIfExists('permission')
         .dropTableIfExists('resource')
