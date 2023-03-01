@@ -134,6 +134,14 @@ module.exports = {
       template: './src/templates/product_details.html',
       filename: 'product_details.html'
     }),
+    new HtmlWebpackPlugin({
+      template: './src/templates/users_panel.html',
+      filename: 'users_panel.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/templates/products_panel.html',
+      filename: 'products_panel.html'
+    }),
 
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
