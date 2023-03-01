@@ -6,6 +6,7 @@ const users = [
         first_name: 'testName',
         last_name: 'testLastName',
         email: 'test@test.com',
+        password: '123',
         address_id: 1,
         role_id: 1
     }

@@ -63,7 +63,7 @@ exports.up = function (knex) {
             table.increments('id').primary()
             table.string('first_name', 50).notNullable()
             table.string('last_name', 50).notNullable()
-            table.string('email', 100).notNullable().unique().checkRegex('/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/')
+            table.string('email', 100).notNullable().unique()
             table.string('password')
             table.integer('address_id').unsigned().notNullable()
             table.integer('role_id').unsigned().defaultTo(1).notNullable()
@@ -87,7 +87,7 @@ exports.up = function (knex) {
             table.foreign('user_id').references('user.id')
             table.foreign('product_id').references('product.id')
         })
-        .createTable('status_static', table => {
+        .createTable('status', table => {
             table.increments('id').primary()
             table.string('name', 50).notNullable()  // 'Watching, Processing, Shipped'
         })
@@ -116,7 +116,7 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
     return knex.schema
-        .dropTableIfExists('status_static')
+        .dropTableIfExists('status')
         .dropTableIfExists('order_item')
         .dropTableIfExists('rating')
         .dropTableIfExists('product')
@@ -126,6 +126,7 @@ exports.down = function (knex) {
         .dropTableIfExists('oauth2_user')
         .dropTableIfExists('user')
         .dropTableIfExists('address')
+        .dropTableIfExists('address_type')
         .dropTableIfExists('access')
         .dropTableIfExists('permission')
         .dropTableIfExists('resource')
