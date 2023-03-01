@@ -22,7 +22,7 @@ exports.up = function (knex) {
             table.foreign('type_id').references('type.id')
             table.timestamps(true, true)
         })
-        .createTable('address_type', table=>{
+        .createTable('address_type', table => {
             table.increments('id').primary()
             table.string('name', 30).notNullable() // Main, Shipping
         })
@@ -36,11 +36,11 @@ exports.up = function (knex) {
             table.foreign('address_type_id').references('address_type.id')
         })
         /************************* permission managment tables **********************/
-        .createTable('role', table =>{
+        .createTable('role', table => {
             table.increments('id').primary()
             table.string('name', 50).notNullable() // customer, consultant, admin, superadmin 
         })
-        .createTable('resource', table =>{
+        .createTable('resource', table => {
             table.increments('id').primary()
             table.string('name', 50).notNullable() // table name
         })
@@ -116,19 +116,19 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
     return knex.schema
-        .dropTableIfExists('status')
         .dropTableIfExists('order_item')
-        .dropTableIfExists('rating')
-        .dropTableIfExists('product')
-        .dropTableIfExists('brand')
-        .dropTableIfExists('type')
         .dropTableIfExists('order')
+        .dropTableIfExists('status')
+        .dropTableIfExists('rating')
         .dropTableIfExists('oauth2_user')
         .dropTableIfExists('user')
-        .dropTableIfExists('address')
-        .dropTableIfExists('address_type')
         .dropTableIfExists('access')
         .dropTableIfExists('permission')
         .dropTableIfExists('resource')
         .dropTableIfExists('role')
+        .dropTableIfExists('address')
+        .dropTableIfExists('address_type')
+        .dropTableIfExists('product')
+        .dropTableIfExists('brand')
+        .dropTableIfExists('type')
 };

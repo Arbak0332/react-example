@@ -1,13 +1,20 @@
 const jwt = require('jsonwebtoken')
 const User = require('../../utils/database/models/user')
+const { BadRequestError } = require('../../utils/error')
 
-const googleSignIn = async (req, res) =>{
-    console.log(req.body)    
+// creating OAUTH2 user
+const googleSignIn = async (req, res) => {
+    console.log(req.body)
 
-    res.redirect(302,'http://localhost:8080/')
+    // TODO decode jwt 
+    //const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+
+    res.redirect(302, 'http://localhost:8080/')
 }
 
-const register = async (req, res) =>{
+// creating custom user
+const register = async (req, res) => {
     const user = await User.query().insert({ ...req.body })
 
     if (!user)

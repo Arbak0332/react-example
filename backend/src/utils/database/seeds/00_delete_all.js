@@ -4,8 +4,11 @@ exports.seed = async function (knex) {
     Model.knex(knex);
     // Deletes ALL existing entries
 
-    await knex('user').del()
+    await knex('rating').del()
     await knex.raw('ALTER SEQUENCE rating_id_seq RESTART WITH 1')
+
+    await knex('user').del()
+    await knex.raw('ALTER SEQUENCE user_id_seq RESTART WITH 1')
 
     await knex('address').del()
     await knex.raw('ALTER SEQUENCE address_id_seq RESTART WITH 1')

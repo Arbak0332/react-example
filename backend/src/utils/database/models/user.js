@@ -20,6 +20,8 @@ class User extends Model {
 
     async $beforeInsert(queryContext) {
         await super.$beforeInsert(queryContext);
+        if(!this.password)
+            return 
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(this.password, salt);
         this.password = hashedPassword;
