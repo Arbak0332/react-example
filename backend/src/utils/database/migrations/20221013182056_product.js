@@ -71,13 +71,6 @@ exports.up = function (knex) {
             table.foreign('address_id').references('address.id')
             table.foreign('role_id').references('role.id')
         })
-        .createTable('oauth2_user', table => {
-            table.increments('id').primary()
-            table.integer('user_id').index()
-            table.text('token').notNullable()
-
-            table.foreign('user_id').references('user.id')
-        })
         .createTable('rating', table => {
             table.increments('id').primary()
             table.integer('rate').notNullable().checkBetween([1, 5])
@@ -120,7 +113,6 @@ exports.down = function (knex) {
         .dropTableIfExists('order')
         .dropTableIfExists('status')
         .dropTableIfExists('rating')
-        .dropTableIfExists('oauth2_user')
         .dropTableIfExists('user')
         .dropTableIfExists('access')
         .dropTableIfExists('permission')

@@ -5,12 +5,15 @@ const express = require('express')
 const app = express()
 const setupDatabase = require('./src/utils/database')
 const cors = require('cors');
+const passport = require('passport')
+const cookieParser = require('cookie-parser');
 
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
-
+app.use(cookieParser())
+app.use(passport.initialize());
 
 
 // routes
