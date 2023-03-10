@@ -1,11 +1,11 @@
 
-export default AboutUs = () => {
+const AboutUs = () => {
     return (
         <div class="container px-0 mt-6">
             <div class="row mx-0 mb-6">
                 <div class="col-lg-6 px-0">
                     <div class="img-about-wrapper">
-                        <img src="./images/about/office.jpg" alt="" class="img-about" />
+                        <img src={require("./images/about/office.jpg")} alt="" class="img-about" />
                     </div>
                 </div>
                 <div class="col-lg-6 px-0 d-flex text-center flex-column py-4">
@@ -51,3 +51,4 @@ export default AboutUs = () => {
 
     )
 }
+export default AboutUs
