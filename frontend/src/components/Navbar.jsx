@@ -34,7 +34,7 @@ const Tabs = ()=>{
 const Navbar = () => {
     return (
         <>
-            <header className="d-flex justify-content-center ">
+            <header>
                 <nav className="navbar navbar-expand-md bg-navbar navbar-light fixed-top first-nav">
                     <div className="container-fluid">
                         <a className="navbar-brand me-3 me-md-0" href="/#">MEBEL</a>

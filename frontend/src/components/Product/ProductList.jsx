@@ -17,7 +17,7 @@ const ProductList = ({ ...filters }) => {
     }, [])
 
     return (
-        <div class="row my-7 mx-0">
+        <div class="row mx-0">
             {
                 products?.length > 0
                     ?
