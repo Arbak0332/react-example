@@ -17,7 +17,7 @@ exports.up = function (knex) {
             table.integer('brand_id').notNullable().unsigned()
             table.integer('type_id').notNullable().unsigned()
             table.integer('quantity').unsigned().notNullable()
-
+            
             table.foreign('brand_id').references('brand.id')
             table.foreign('type_id').references('type.id')
             table.timestamps(true, true)
