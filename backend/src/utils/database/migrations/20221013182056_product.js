@@ -1,12 +1,16 @@
 exports.up = function (knex) {
     return knex.schema
         .createTable('brand', table => {
-            table.increments('id').primary()
-            table.string('name', 40).notNullable().unique().index()
+            table.string('id', 40).notNullable().primary()
         })
         .createTable('type', table => {
-            table.increments('id').primary()
-            table.string('name', 40).notNullable().unique().index()
+            table.string('id', 40).notNullable().primary()
+        })
+        .createTable('material', table=>{
+            table.string('id', 40).notNullable().primary()
+        })
+        .createTable('color', table => {
+            table.string('id', 40).notNullable().primary()
         })
         .createTable('product', table => {
             table.increments('id').primary()
@@ -14,12 +18,16 @@ exports.up = function (knex) {
             table.float('price', 2).unsigned().notNullable()
             table.string('image_name', 100).notNullable()
             table.text('description').notNullable()
-            table.integer('brand_id').notNullable().unsigned()
-            table.integer('type_id').notNullable().unsigned()
+            table.string('brand').notNullable()
+            table.string('type').notNullable()
+            table.string('material').notNullable()
+            table.string('color').notNullable()
             table.integer('quantity').unsigned().notNullable()
             
-            table.foreign('brand_id').references('brand.id')
-            table.foreign('type_id').references('type.id')
+            table.foreign('brand').references('brand.id')
+            table.foreign('type').references('type.id') 
+            table.foreign('material').references('material.id') 
+            table.foreign('color').references('color.id') 
             table.timestamps(true, true)
         })
         .createTable('address_type', table => {
