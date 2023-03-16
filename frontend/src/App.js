@@ -5,12 +5,12 @@ import Products from './pages/Products';
 import 'bootstrap/dist/js/bootstrap';
 import './sass/index.sass'
 
-const App = ()=> {
+const App = () => {
   return (
     // <Home/>
     <Routes>
-        <Route path={PATH.HOME} element={<Home/>}/>
-        <Route path={PATH.PRODUCTS} element={<Products/>}/>
+      <Route path={PATH.HOME} element={<Home />} />
+      <Route path={PATH.PRODUCTS} element={<Products />} />
     </Routes>
   )
 }

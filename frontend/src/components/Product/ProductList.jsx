@@ -1,19 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext, forwardRef, useImperativeHandle } from 'react'
 import ProductCard from './ProductCard'
+import FilterContext from '../../context/FIlterContext'
+import file from '../../config.json';
 
-const API_URL = 'http://localhost:5000/api/v1/products'
 
-const ProductList = ({ ...filters }) => {
-    const [products, setProducts] = useState([])
 
-    const searchProducts = async (query) => {
-        const response = await fetch(`${API_URL}?${query}`)
+const ProductList = forwardRef(({ query }, ref) => {
+
+    // const {query} = useContext(FilterContext)
+
+    const searchProducts = async (searchParams) => {
+        const API_URL = file.API_URL
+        if (searchParams === undefined)
+            searchParams = ''
+        const response = await fetch(`${API_URL}/api/v1/products${searchParams}`)
         const data = await response.json()
-
         setProducts(data)
     }
+
+    useImperativeHandle(ref, () => ({
+        filterProductsBy(searchParams) {
+            console.log('it working')
+            searchProducts('')
+        }
+    }));
+
+    const [products, setProducts] = useState([])
+
+
     useEffect(() => {
-        searchProducts('limit=6')
+        searchProducts(query)
     }, [])
 
     return (
@@ -22,7 +38,6 @@ const ProductList = ({ ...filters }) => {
                 products?.length > 0
                     ?
                     (
-
                         products.map((product) =>
                         (
                             <ProductCard product={product} />
@@ -41,5 +56,5 @@ const ProductList = ({ ...filters }) => {
 
 
     )
-}
+})
 export default ProductList
