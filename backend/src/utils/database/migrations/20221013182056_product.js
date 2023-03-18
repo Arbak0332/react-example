@@ -1,16 +1,16 @@
 exports.up = function (knex) {
     return knex.schema
         .createTable('brand', table => {
-            table.string('id', 40).notNullable().primary()
+            table.string('name', 40).notNullable().primary()
         })
         .createTable('type', table => {
-            table.string('id', 40).notNullable().primary()
+            table.string('name', 40).notNullable().primary()
         })
         .createTable('material', table=>{
-            table.string('id', 40).notNullable().primary()
+            table.string('name', 40).notNullable().primary()
         })
         .createTable('color', table => {
-            table.string('id', 40).notNullable().primary()
+            table.string('name', 40).notNullable().primary()
         })
         .createTable('product', table => {
             table.increments('id').primary()
@@ -24,10 +24,10 @@ exports.up = function (knex) {
             table.string('color').notNullable()
             table.integer('quantity').unsigned().notNullable()
             
-            table.foreign('brand').references('brand.id')
-            table.foreign('type').references('type.id') 
-            table.foreign('material').references('material.id') 
-            table.foreign('color').references('color.id') 
+            table.foreign('brand').references('brand.name')
+            table.foreign('type').references('type.name') 
+            table.foreign('material').references('material.name') 
+            table.foreign('color').references('color.name') 
             table.timestamps(true, true)
         })
         .createTable('address_type', table => {
@@ -131,4 +131,7 @@ exports.down = function (knex) {
         .dropTableIfExists('product')
         .dropTableIfExists('brand')
         .dropTableIfExists('type')
+        .dropTableIfExists('material')
+        .dropTableIfExists('color')
+        
 };

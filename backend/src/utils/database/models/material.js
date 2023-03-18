@@ -1,13 +1,13 @@
 const { Model } = require("objection");
 const knex = require('../knexfile')
 Model.knex(knex)
-class Brand extends Model {
+class Material extends Model {
     static get tableName() {
-        return "brand";
+        return "material";
     }
     static get idColumn() {
         return 'name';
     }
 }
 
-module.exports = Brand
+module.exports = Material

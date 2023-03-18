@@ -35,9 +35,9 @@ describe('Brand endpoint', () => {
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.CREATED);
-                    expect(res.body).to.have.property('id');
+                    expect(res.body).to.have.property('name');
                     expect(res.body.name).to.equal(brand.name);
-                    brandId = res.body.id;
+                    brandId = res.body.name;
                     done();
                 });
         });
@@ -51,7 +51,7 @@ describe('Brand endpoint', () => {
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.OK);
-                    expect(res.body).to.have.property('id');
+                    expect(res.body).to.have.property('name');
                     expect(res.body.name).to.equal('Nike');
                     done();
                 });
@@ -81,7 +81,7 @@ describe('Brand endpoint', () => {
                 .end((err, res) => {
                     
                     expect(res.status).to.be.equal(StatusCodes.OK);
-                    expect(res.body).to.have.property('id');
+                    expect(res.body).to.have.property('name');
                     expect(res.body.name).to.equal(updatedBrand.name);
                     done();
                 });

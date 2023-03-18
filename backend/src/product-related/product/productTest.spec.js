@@ -1,14 +1,16 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const expect = chai.expect
-const app = require('../../app')
+const app = require('../../../app')
 const { StatusCodes } = require('http-status-codes');
 
 chai.use(chaiHttp)
 
-
+/***************************************************************************************/
+/***************************************************************************************/
 /********************************* GET PRODUCT *****************************************/
-
+/***************************************************************************************/
+/***************************************************************************************/
 describe('Product endpoint', () => {
 
 
@@ -58,8 +60,10 @@ describe('Product endpoint', () => {
                     expect(res.body).to.have.property('image_name')
                     expect(res.body).to.have.property('description')
                     expect(res.body).to.have.property('quantity')
-                    expect(res.body).to.have.property('brand_id')
-                    expect(res.body).to.have.property('type_id')
+                    expect(res.body).to.have.property('brand')
+                    expect(res.body).to.have.property('type')
+                    expect(res.body).to.have.property('material')
+                    expect(res.body).to.have.property('color')
                     expect(res.body).to.have.property('created_at')
                     expect(res.body).to.have.property('updated_at')
 
@@ -69,7 +73,11 @@ describe('Product endpoint', () => {
 
     })
 
+    /***************************************************************************************/
+    /***************************************************************************************/
     /********************************* GET ALL PRODUCTS *****************************************/
+    /***************************************************************************************/
+    /***************************************************************************************/
 
 
     describe('/api/v1/products GET all products', () => {
@@ -127,16 +135,16 @@ describe('Product endpoint', () => {
                 })
         })
 
-        it('should have find 6 product of type \'8\' (Desk)', function (done) {
+        it('should have find 6 product of type \'Desk\'', function (done) {
 
             chai.request(app)
-                .get('/api/v1/products?type_id=8')
+                .get('/api/v1/products?type=Desk')
                 .end((err, res) => {
 
                     if (err) console.error(err);
                     const products = res.body
                     products.map(item => {
-                        expect(item.type_id).to.be.equal(8)
+                        expect(item.type).to.be.equal('Desk')
                     })
                     expect(products).to.have.lengthOf(6)
                     done()
@@ -145,10 +153,10 @@ describe('Product endpoint', () => {
         })
 
 
-        it('should have find 1 product of brand \'2\'(Haven Home)', function (done) {
+        it('should have find 1 product of brand \'Haven Home\'', function (done) {
 
             chai.request(app)
-                .get('/api/v1/products?brand_id=2')
+                .get('/api/v1/products?brand=Haven Home')
                 .end((err, res) => {
 
                     if (err) console.error(err);
@@ -156,7 +164,7 @@ describe('Product endpoint', () => {
                     expect(res.body).to.have.lengthOf(1)
 
                     const product = res.body[0]
-                    expect(product.brand_id).to.be.equal(2)
+                    expect(product.brand).to.be.equal('Haven Home')
                     done()
                 })
         })
@@ -257,6 +265,12 @@ describe('Product endpoint', () => {
         })
     })
 
+    /***************************************************************************************/
+    /***************************************************************************************/
+    /******************************** POST  ***************************************************/
+    /***************************************************************************************/
+    /***************************************************************************************/
+
 
     describe('/api/v1/products POST', () => {
 
@@ -269,8 +283,10 @@ describe('Product endpoint', () => {
                     image_name: 'testimage',
                     description: 'lorem ipsum',
                     quantity: 10,
-                    brand_id: 1,
-                    type_id: 1
+                    brand: 'Fyra Home',
+                    type: 'Desk',
+                    material:'Oak',
+                    color:'Brown'
                 })
                 .end((err, res) => {
 
@@ -290,8 +306,10 @@ describe('Product endpoint', () => {
                     image_name: 'testimage',
                     description: 'lorem ipsum',
                     quantity: 10,
-                    brand_id: 1,
-                    type: 15 // this type does not exist 
+                    brand: 'Fyra Home',
+                    type: 'Desk123', // this type doesnt exist
+                    material: 'Oak',
+                    color: 'Brown'
                 })
                 .end((err, res) => {
 
@@ -312,8 +330,8 @@ describe('Product endpoint', () => {
                     image_name: 'testimage',
                     description: 'lorem ipsum',
                     quantity: 10,
-                    brand_id: 1,
-                    type: 1
+                    brand: 'Fyra Home',
+                    type: 'Desk'
                 })
                 .end((err, res) => {
 
@@ -328,6 +346,11 @@ describe('Product endpoint', () => {
 
     })
 
+    /***************************************************************************************/
+    /***************************************************************************************/
+    /******************************** PATCH  ***************************************************/
+    /***************************************************************************************/
+    /***************************************************************************************/
     describe('/api/v1/products PATCH', () => {
         it('should update product\' name', function (done) {
             chai.request(app)
@@ -338,8 +361,10 @@ describe('Product endpoint', () => {
                     image_name: 'testimage',
                     description: 'lorem ipsum',
                     quantity: 10,
-                    brand_id: 1,
-                    type_id: 1
+                    brand: 'Lumina Furnishings',
+                    type: "Sofa",
+                    material: "Oak",
+                    color: "Black"
                 })
                 .end((err, res) => {
 
@@ -359,8 +384,8 @@ describe('Product endpoint', () => {
                     image_name: 'test_image',
                     description: 'lorem ipsum',
                     rating: 10,
-                    brand: 'Durian',
-                    type: 'Coir'
+                    brand: 'Lumina Furnishings',
+                    type: "Sofa",
                 })
                 .end((err, res) => {
 
@@ -373,6 +398,11 @@ describe('Product endpoint', () => {
         })
     })
 
+    /***************************************************************************************/
+    /***************************************************************************************/
+    /******************************** DELETE  ***************************************************/
+    /***************************************************************************************/
+    /***************************************************************************************/
 
     describe('/api/v1/products DELETE', () => {
 

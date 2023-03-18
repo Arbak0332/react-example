@@ -5,6 +5,9 @@ class Type extends Model {
     static get tableName() {
         return "type";
     }
+    static get idColumn() {
+        return 'name';
+    }
 }
 
 module.exports = Type

@@ -6,9 +6,11 @@ const { Model } = require('objection');
 
 const getAllProducts = async (req, res) => {
     const {
-        type_id,
+        type,
         rating,
-        brand_id,
+        brand,
+        material,
+        color,
         name,
         price,
         limit, // 12  default
@@ -35,18 +37,26 @@ const getAllProducts = async (req, res) => {
 
     /*****************************WHERE******************************/
 
-    if (type_id) {
+    if (type) {
         query = query.where({
-            type_id: type_id
+            type: type
         })
     }
-
-    if (brand_id) {
+    if (brand) {
         query = query.where({
-            brand_id: brand_id
+            brand: brand
         })
     }
-
+    if(material){
+        query = query.where({
+            material:material
+        })
+    }
+    if (color) {
+        query = query.where({
+            color: color
+        })
+    }
     if (name) {
         query = query.where('name', 'ilike', `%${name}%`)
     }

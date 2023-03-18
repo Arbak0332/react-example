@@ -33,9 +33,9 @@ describe('Types endpoint', () => {
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.CREATED);
-                    expect(res.body).to.have.property('id');
+                    expect(res.body).to.have.property('name');
                     expect(res.body.name).to.equal(newType.name);
-                    typeId = res.body.id;
+                    typeId = res.body.name;
                     done();
                 });
         });
@@ -49,7 +49,7 @@ describe('Types endpoint', () => {
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.OK);
-                    expect(res.body).to.have.property('id');
+                    expect(res.body).to.have.property('name');
                     expect(res.body.name).to.equal('Test Type');
                     done();
                 });
@@ -66,7 +66,7 @@ describe('Types endpoint', () => {
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.OK);
-                    expect(res.body).to.have.property('id');
+                    expect(res.body).to.have.property('name');
                     expect(res.body.name).to.equal(updatedType.name);
                     done();
                 });
