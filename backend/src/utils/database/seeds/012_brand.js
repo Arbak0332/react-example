@@ -1,5 +1,3 @@
-const Brand = require('../models/brand')
-const { Model } = require('objection')
 const furnitureBrands = [
     { name: 'Lumina Furnishings' },
     { name: 'Haven Home' },
@@ -15,7 +13,5 @@ const furnitureBrands = [
 ];
 
 exports.seed = async function (knex) {
-    Model.knex(knex);
-
-    await Brand.query().insert(furnitureBrands)
+    return await knex('brand').insert(furnitureBrands)
 };

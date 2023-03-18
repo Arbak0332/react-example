@@ -1,5 +1,3 @@
-const Type = require('../models/type')
-const {Model} = require('objection')
 const furnitureTypes = [
     { name: "Sofa" },
     { name: "Dining table" },
@@ -14,9 +12,5 @@ const furnitureTypes = [
 ];
 
 exports.seed = async function (knex) {
-    Model.knex(knex);
-
-
-
-    await Type.query().insert(furnitureTypes)
-};
+    return await knex('type').insert(furnitureTypes)
+}
