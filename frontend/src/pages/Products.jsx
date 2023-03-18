@@ -1,7 +1,8 @@
-import Navbar from "../components/Navbar"
-import Footer from '../components/Footer'
+import Navbar from "../components/Common/Navbar"
+import Footer from '../components/Common/Footer'
 import ProductList from "../components/Product/ProductList"
 import FilterList from "../components/Product/FilterList"
+import Prompt from "../components/Common/Prompt"
 
 import FilterContext from "../context/FIlterContext"
 import { useRef, useContext } from 'react'
@@ -19,7 +20,7 @@ const Products = () => {
     return (
         <>
             <Navbar />
-
+            <Prompt text={'SHOP THE COLLECTION'}/>
             <main className="row mx-0 mt-7">
                 <div className="col-md-2">
                     <FilterList />

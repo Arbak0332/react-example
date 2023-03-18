@@ -1,36 +1,53 @@
-import { useEffect, useState, useContext, forwardRef, useImperativeHandle } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import ProductCard from './ProductCard'
-import FilterContext from '../../context/FIlterContext'
+
 import file from '../../config.json';
 
-
+/*
+    ProductList component is simply a collection of products. 
+    and it filtrs them in 2 ways:
+    -by calling 'filterProductsBy' function (for only side Filters like 'Categories', 'Brands', 'Materials', 'Colors')
+    -by updating query parameter (for top and bottom Filters like 'Price', 'Pagination')
+    It accept only map in parameters
+*/
 
 const ProductList = forwardRef(({ query }, ref) => {
 
-    // const {query} = useContext(FilterContext)
+    const convertToString = (searchParams)=>{
+        let result = ''
+        if(searchParams === undefined)
+            return result
+        
+        searchParams.forEach((value, key) => {
+            result = result.concat(`?${key}=${value}`)
+        });
+
+        return result
+    }
 
     const searchProducts = async (searchParams) => {
         const API_URL = file.API_URL
-        if (searchParams === undefined)
-            searchParams = ''
-        const response = await fetch(`${API_URL}/api/v1/products${searchParams}`)
+
+        const params = convertToString(searchParams)
+            
+        const response = await fetch(`${API_URL}/api/v1/products${params}`)
         const data = await response.json()
         setProducts(data)
     }
 
     useImperativeHandle(ref, () => ({
         filterProductsBy(searchParams) {
-            console.log('it working')
-            searchProducts('')
+            searchProducts(searchParams)
         }
     }));
 
     const [products, setProducts] = useState([])
 
 
+
     useEffect(() => {
         searchProducts(query)
-    }, [])
+    }, [query])
 
     return (
         <div class="row mx-0">
