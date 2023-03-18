@@ -3,13 +3,13 @@ const { StatusCodes } = require('http-status-codes');
 const { NotFoundError, BadRequestError } = require('../../utils/error')
 
 // GET all types
-async function getAllTypes(req, res) {
+const getAllTypes= async (req, res)=> {
     const types = await Type.query();
     res.status(StatusCodes.OK).json(types);
 }
 
 // GET a specific type
-async function getTypeById(req, res) {
+const getTypeById= async (req, res)=> {
     const { id } = req.params;
     const type = await Type.query().findById(id);
 
@@ -20,7 +20,7 @@ async function getTypeById(req, res) {
 }
 
 // POST a new type
-async function createType(req, res) {
+const createType= async (req, res)=> {
     const { name } = req.body;
     const type = await Type.query().insert({ name });
 
@@ -31,18 +31,20 @@ async function createType(req, res) {
 }
 
 // PUT (update) an existing type
-async function updateType(req, res) {
+const updateType= async (req, res)=> {
     const { id } = req.params;
     const { name } = req.body;
-    const type = await Type.query().patchAndFetchById(id, { name });
+    const type = await Type.query().findOne({name:id}).patch({name:name})
+
     if (!type)
         throw new NotFoundError('Type not found')
+    const result = await Type.query().findOne({name:name})
 
-    res.status(StatusCodes.OK).json(type);
+    res.status(StatusCodes.OK).json(result);
 }
 
 // DELETE an existing type
-async function deleteType(req, res) {
+const deleteType= async (req, res)=> {
     const { id } = req.params;
     const numRowsDeleted = await Type.query().deleteById(id);
     if (numRowsDeleted <= 0)

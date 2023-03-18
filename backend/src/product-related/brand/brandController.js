@@ -3,13 +3,13 @@ const { StatusCodes } = require('http-status-codes');
 const { NotFoundError, BadRequestError } = require('../../utils/error')
 
 // GET all brands
-async function getAllBrands(req, res) {
+const getAllBrands= async(req, res)=> {
     const brands = await Brand.query();
     res.status(StatusCodes.OK).json(brands);
 }
 
 // GET a specific brand
-async function getBrandById(req, res) {
+const getBrandById= async(req, res)=> {
     const { id } = req.params;
     const brand = await Brand.query().findById(id);
     if (!brand) 
@@ -19,7 +19,7 @@ async function getBrandById(req, res) {
 }
 
 // POST a new brand
-async function createBrand(req, res) {
+const createBrand= async(req, res)=> {
     const { name } = req.body;
     if(!name)
         throw new BadRequestError('Invalid data')
@@ -28,7 +28,7 @@ async function createBrand(req, res) {
 }
 
 // PUT (update) an existing brand
-async function updateBrand(req, res) {
+const updateBrand= async(req, res)=> {
     const { id } = req.params;
     const { name } = req.body;
     const brand = await Brand.query().patchAndFetchById(id, { name });
@@ -39,7 +39,7 @@ async function updateBrand(req, res) {
 }
 
 // DELETE an existing brand
-async function deleteBrand(req, res) {
+const deleteBrand= async(req, res)=> {
     const { id } = req.params;
     const numRowsDeleted = await Brand.query().deleteById(id);
     if (numRowsDeleted <= 0)
