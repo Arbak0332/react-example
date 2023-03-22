@@ -6,14 +6,14 @@ const app = require('../../../app');
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-describe('Types endpoint', () => {
-    let typeId;
+describe('Materials endpoint', () => {
+    let materialId;
 
-    describe('GET /api/v1/products/types', () => {
-        it('should get all products/types', (done) => {
+    describe('GET /api/v1/products/materials', () => {
+        it('should get all materials', (done) => {
             chai
                 .request(app)
-                .get('/api/v1/products/types')
+                .get('/api/v1/products/materials')
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.OK);
@@ -23,65 +23,65 @@ describe('Types endpoint', () => {
         });
     });
 
-    describe('POST /api/v1/products/types', () => {
-        it('should create a new type', (done) => {
-            const newType = { name: 'Test Type' };
+    describe('POST /api/v1/products/materials', () => {
+        it('should create a new material', (done) => {
+            const newMaterial = { name: 'Test Material' };
             chai
                 .request(app)
-                .post('/api/v1/products/types')
-                .send(newType)
+                .post('/api/v1/products/materials')
+                .send(newMaterial)
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.CREATED);
                     expect(res.body).to.have.property('name');
-                    expect(res.body.name).to.equal(newType.name);
-                    typeId = res.body.name;
+                    expect(res.body.name).to.equal(newMaterial.name);
+                    materialId = res.body._id;
                     done();
                 });
         });
     });
 
-    describe('GET /api/v1/products/types/:typeId', () => {
-        it('should get a type by id', (done) => {
+    describe('GET /api/v1/products/materials/:materialId', () => {
+        it('should get a material by id', (done) => {
             chai
                 .request(app)
-                .get(`/api/v1/products/types/${typeId}`)
+                .get(`/api/v1/products/materials/${materialId}`)
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.OK);
                     expect(res.body).to.have.property('name');
-                    expect(res.body.name).to.equal('Test Type');
+                    expect(res.body.name).to.equal('Test Material');
                     done();
                 });
         });
     });
 
-    describe('PATCH /api/v1/products/types/:typeId', () => {
-        it('should update a type', (done) => {
-            const newName = 'Updated Test Type'
-            const updatedType = { name: newName };
+    describe('PATCH /api/v1/products/materials/:materialId', () => {
+        it('should update a material', (done) => {
+            const newName = 'Updated Test Material'
+            const updatedMaterial = { name: newName };
             chai
                 .request(app)
-                .patch(`/api/v1/products/types/${typeId}`)
-                .send(updatedType)
+                .patch(`/api/v1/products/materials/${materialId}`)
+                .send(updatedMaterial)
                 .end((err, res) => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.OK);
                     expect(res.body).to.have.property('name');
-                    expect(res.body.name).to.equal(updatedType.name);
-                    typeId = newName
+                    expect(res.body.name).to.equal(updatedMaterial.name);
+                    materialId = res.body._id;
                     done();
                 });
         });
     });
 
-    describe('DELETE /api/v1/products/types/:typeId', () => {
-        it('should delete a type', (done) => {
+    describe('DELETE /api/v1/products/materials/:materialId', () => {
+        it('should delete a material', (done) => {
             chai
                 .request(app)
-                .delete(`/api/v1/products/types/${typeId}`)
+                .delete(`/api/v1/products/materials/${materialId}`)
                 .end((err, res) => {
-                    if(err)
+                    if (err)
                         console.log(error)
                     expect(err).to.be.null;
                     expect(res).to.have.status(StatusCodes.NO_CONTENT);

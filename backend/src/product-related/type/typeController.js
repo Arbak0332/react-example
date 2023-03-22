@@ -46,7 +46,7 @@ const updateType= async (req, res)=> {
 // DELETE an existing type
 const deleteType= async (req, res)=> {
     const { id } = req.params;
-    const numRowsDeleted = await Type.query().deleteById(id);
+    const numRowsDeleted = await Type.query().delete().where({name:id});
     if (numRowsDeleted <= 0)
         throw new NotFoundError('Type not found')
         
