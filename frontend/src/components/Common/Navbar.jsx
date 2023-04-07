@@ -12,7 +12,7 @@ const Tabs = ()=>{
                             <a className="nav-link" href="/products">Shop All</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/#">About Us</a>
+                            <a className="nav-link" href="/aboutus">About Us</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="/#">Contact</a>

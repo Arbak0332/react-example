@@ -1,3 +1,5 @@
+import {Link} from 'react-router-dom' 
+
 
 const ProductCard = ({ product }) => {
     return (
@@ -5,16 +7,15 @@ const ProductCard = ({ product }) => {
 
             <div className="card">
 
-                    <a href="./product_details.html" className="product-link">
-                        <img src={require("../../assets/images/diningtables/diningtable2.jpg")} alt="" className="card-img-top" />
-                        <div className="quick-view">Quick view</div>
-                        <div className="card-body text-center">
-                            <p className="card-text">{product.name}</p>
-                            <p className="card-text">£{product.price}</p>
-                        </div>
-                    </a>
-                </div>
-
+                <Link to={`/products/${product.name}`} className="product-link">
+                    <img src={require("../../assets/images/diningtables/diningtable2.jpg")} alt="" className="card-img-top" />
+                    <div className="quick-view">Quick view</div>
+                    <div className="card-body text-center">
+                        <p className="card-text">{product.name}</p>
+                        <p className="card-text">£{product.price}</p>
+                    </div>
+                </Link>
+            </div>
         </div>
     )
 

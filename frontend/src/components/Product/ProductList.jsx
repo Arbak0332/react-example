@@ -14,12 +14,12 @@ import file from '../../config.json';
 const ProductList = forwardRef(({ query }, ref) => {
 
     const convertToString = (searchParams)=>{
-        let result = ''
+        let result = '?'
         if(searchParams === undefined)
-            return result
+            return ''
         
         searchParams.forEach((value, key) => {
-            result = result.concat(`?${key}=${value}`)
+            result = result.concat(`${key}=${value}&`)
         });
 
         return result

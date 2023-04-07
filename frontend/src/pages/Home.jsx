@@ -1,5 +1,5 @@
 import Navbar from '../components/Common/Navbar'
-import Jumbotron from '../components/Common/Jumbotron'
+import Jumbotron from '../components/Home/Jumbotron'
 import Inspiration from '../components/Home/Inspiration'
 import Promotion from '../components/Home/Promotion'
 import Newsletter from '../components/Home/Newsletter'

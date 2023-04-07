@@ -12,7 +12,7 @@ const Item = ({ obj, itemClick }) => {
         <Form.Group className="d-flex justify-content-between" controlId="formBasicCheckbox">
             <label> {obj.name}</label>
             <Form.Check type="checkbox" 
-                onClick={()=>{
+                onChange={()=>{
                     itemClick(obj.name, checked)
                     setCheck(!checked)
                 }}
@@ -26,7 +26,7 @@ const Filter = ({ filterName, displayName }) => {
     const [resources, setResources] = useState([]) // filters 
     const [expand, setExpand] = useState(false)  // is filter list expanded
     const [icon, setIcon] = useState('bi-plus') // plus / minus icons
-    const { addFilter } = useContext(FilterContext)
+    const { addFilter, deleteFilter } = useContext(FilterContext)
 
     const getResource = async () => {
         const API_URL = file.API_URL
@@ -38,7 +38,7 @@ const Filter = ({ filterName, displayName }) => {
 
     const itemClickHandler = (name, checked)=>{
         if(checked)
-            console.log('remove')
+            deleteFilter(filterName, name)
         else
             addFilter(filterName, name)
     }

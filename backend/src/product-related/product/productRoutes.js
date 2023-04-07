@@ -15,8 +15,10 @@ router.route('/')
     .post(createProduct)
 
 router.route('/:id')
-    .get(getProduct)
     .patch(updateProduct)
     .delete(deleteProduct)
+
+router.route('/:name')
+    .get(getProduct)
 
 module.exports = router

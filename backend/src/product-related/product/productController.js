@@ -6,11 +6,11 @@ const { Model } = require('objection');
 
 const getAllProducts = async (req, res) => {
     const {
-        type,
+        types,
         rating,
-        brand,
-        material,
-        color,
+        brands,
+        materials,
+        colors,
         name,
         price,
         limit, // 12  default
@@ -37,24 +37,24 @@ const getAllProducts = async (req, res) => {
 
     /*****************************WHERE******************************/
 
-    if (type) {
+    if (types) {
         query = query.where({
-            type: type
+            type: types
         })
     }
-    if (brand) {
+    if (brands) {
         query = query.where({
-            brand: brand
+            brand: brands
         })
     }
-    if(material){
+    if(materials){
         query = query.where({
-            material:material
+            material:materials
         })
     }
-    if (color) {
+    if (colors) {
         query = query.where({
-            color: color
+            color: colors
         })
     }
     if (name) {
@@ -110,12 +110,12 @@ const getAllProducts = async (req, res) => {
 
 
 const getProduct = async (req, res) => {
-    const product = await Product.query().findById(req.params.id)
+    const product = await Product.query().where({name:req.params.name})
 
     if (!product)
         throw new NotFoundError('product does not exist')
 
-    res.status(StatusCodes.OK).json(product)
+    res.status(StatusCodes.OK).json(product[0])
 }
 
 const createProduct = async (req, res) => {
