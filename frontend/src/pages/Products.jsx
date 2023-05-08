@@ -37,6 +37,8 @@ const Products = () => {
 
             <Footer />
         </>
+
+
     )
 }
 

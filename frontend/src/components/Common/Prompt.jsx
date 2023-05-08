@@ -3,12 +3,12 @@ const Prompt = ({text}) => {
 
     return (
 
-        <div class="col my-7">
-            <div class="row">
-                <h2 class="text-center font-weight-bold subtitle">{text}</h2>
+        <div className="col my-7">
+            <div className="row">
+                <h2 className="text-center font-weight-bold subtitle">{text}</h2>
             </div>
-            <div class="row my-3">
-                <div class="mx-auto rectangle"></div>
+            <div className="row my-3">
+                <div className="mx-auto rectangle"></div>
             </div>
         </div>
     )

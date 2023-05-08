@@ -30,9 +30,8 @@ const Filter = ({ filterName, displayName }) => {
 
     const getResource = async () => {
         const API_URL = file.API_URL
-        const response = await fetch(`${API_URL}/api/v1/products/${filterName}`)
+        const response = await fetch(`${API_URL}/products/${filterName}`)
         const data = await response.json()
-        console.log(data)
         setResources(data)
     }
 

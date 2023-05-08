@@ -1,13 +1,16 @@
-import {Link} from 'react-router-dom'
-import { Button, Container } from 'bootstrap'
+import { Link } from 'react-router-dom'
+import { Button, Container } from 'react-bootstrap'
 
-const Admin = ()=>{
+
+const Admin = () => {
     return (
         <>
             <Container>
-                <Button>
-                    <Link></Link>
-                </Button>
+                <Link to="/admin/add-product">
+                    <Button>
+                        Add Product
+                    </Button>
+                </Link>
             </Container>
         </>
     )

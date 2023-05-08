@@ -13,7 +13,7 @@ const ProductInfo = () => {
 
     const getProduct = async()=>{
         const API_URL = file.API_URL
-        const response = await fetch(`${API_URL}/api/v1/products/${name}`)
+        const response = await fetch(`${API_URL}/products/${name}`)
         const data = await response.json()
         setProduct(data)
     }

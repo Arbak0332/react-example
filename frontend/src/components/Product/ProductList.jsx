@@ -30,7 +30,7 @@ const ProductList = forwardRef(({ query }, ref) => {
 
         const params = convertToString(searchParams)
             
-        const response = await fetch(`${API_URL}/api/v1/products${params}`)
+        const response = await fetch(`${API_URL}/products${params}`)
         const data = await response.json()
         setProducts(data)
     }
@@ -50,7 +50,7 @@ const ProductList = forwardRef(({ query }, ref) => {
     }, [query])
 
     return (
-        <div class="row mx-0">
+        <div className="row mx-0">
             {
                 products?.length > 0
                     ?
