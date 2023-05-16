@@ -16,7 +16,7 @@ const ProductCreator = () => {
 
         const {API_URL} = config_file
 
-        // get url to put image directly to s3 bucket
+        // get safe url from server to put image directly to s3 bucket
         const response_url = await fetch(`${API_URL}/products/upload`)
         const {key} = await response_url.json()
         console.log(key)
@@ -29,6 +29,8 @@ const ProductCreator = () => {
             body:selectedFile
         }) 
         console.log(response_s3)
+
+        // print url of image from s3 bucket
         console.log(key.split('?')[0])
 
     }
