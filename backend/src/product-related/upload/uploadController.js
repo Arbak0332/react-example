@@ -17,7 +17,7 @@ const getURL = async (req, res)=>{
     const url = await s3.getSignedUrl('putObject', {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         ContentType: 'image/jpeg',
-        Key : key,
+        Key : `products/${key}`,
         Expires:60
     })
     
