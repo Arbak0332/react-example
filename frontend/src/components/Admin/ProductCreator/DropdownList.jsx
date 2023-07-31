@@ -25,9 +25,9 @@ const Item = ({ name }) => {
 
     }
 
-    // useEffect(() => {
-    //     getResource()
-    // }, [])
+    useEffect(() => {
+        getResource()
+    }, [])
 
     return (
         <>
@@ -42,7 +42,7 @@ const Item = ({ name }) => {
                         >
                             {
                                 resource.map(item => (
-                                    <Dropdown.Item key={item.name} onClick={clickHandler(item.name)}>{item.name}</Dropdown.Item>
+                                    <Dropdown.Item key={item.name} onClick={ ()=> clickHandler(item.name)}>{item.name}</Dropdown.Item>
                                 ))
                             }
                         </DropdownButton>
