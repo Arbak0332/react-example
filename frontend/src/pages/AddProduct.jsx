@@ -5,11 +5,11 @@ import { Container } from 'react-bootstrap'
 
 const AddProduct = () => {
     return (
-
-            <Container className='bg-light'>
+        <ProductCreatorProvider>
+            <Container>
                 <ProductCreator />
             </Container>
-        
+        </ProductCreatorProvider>
     )
 }
 

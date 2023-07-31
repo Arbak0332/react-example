@@ -9,7 +9,7 @@ const Item = ({ name }) => {
 
     const [resource, setResource] = useState([])
     const [title, setTitle] = useState(name)
-    // const {data } = useContext(ProductCreatorContext)
+    const {data } = useContext(ProductCreatorContext)
 
 
     const getResource = async () => {
