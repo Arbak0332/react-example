@@ -119,7 +119,6 @@ const getProduct = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-
     const product = await Product.query().insert({ ...req.body })
 
     if (!product) {

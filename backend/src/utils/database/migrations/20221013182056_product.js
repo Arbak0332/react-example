@@ -14,7 +14,7 @@ exports.up = function (knex) {
         })
         .createTable('product', table => {
             table.increments('id').primary()
-            table.string('name', 300).notNullable().unique()
+            table.string('name', 50).notNullable().unique()
             table.float('price', 2).unsigned().notNullable()
             table.string('image_name', 100).notNullable()
             table.text('description').notNullable()

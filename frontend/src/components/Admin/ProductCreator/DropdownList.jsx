@@ -9,20 +9,21 @@ const Item = ({ name }) => {
 
     const [resource, setResource] = useState([])
     const [title, setTitle] = useState(name)
-    const {data } = useContext(ProductCreatorContext)
-
+    const { categories, setCategories } = useContext(ProductCreatorContext)
 
     const getResource = async () => {
         const API_URL = file.API_URL
         const response = await fetch(`${API_URL}/products/${name}`)
         const data = await response.json()
-        console.log(data)
         setResource(data)
     }
 
     const clickHandler = (select)=>{
         setTitle(select)
 
+        let tmp = categories
+        tmp[name] = select
+        setCategories(tmp)
     }
 
     useEffect(() => {
@@ -57,19 +58,20 @@ const Item = ({ name }) => {
 }
 
 const DropdownList = () => {
+
     return (
 
         <InputGroup className='mb-5 mt-4 d-flex'>
-            <div className='mx-2'>
-                <Item name="brands" />
+            <div className='m-2'>
+                <Item name="brands"/>
             </div>
-            <div className='mx-2'>
+            <div className='m-2'>
                 <Item name="types" />
             </div>
-            <div className='mx-2'>
+            <div className='m-2'>
                 <Item name="colors" />
             </div>
-            <div className='mx-2'>
+            <div className='m-2'>
                 <Item name="materials" />
             </div>
 

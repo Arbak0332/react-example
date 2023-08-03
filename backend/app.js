@@ -8,13 +8,23 @@ const cors = require('cors');
 const passport = require('passport')
 const cookieParser = require('cookie-parser');
 
+
+
+
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
+
 app.use(cookieParser())
 app.use(passport.initialize());
-
+app.use(
+  cors({
+    allowedHeaders: ["Content-Type"], // you can change the headers
+    origin: "http://localhost:3000",
+    methods: ["GET", "PUT", "POST", "DELETE"],
+    preflightContinue: false,
+  })
+);
 
 // routes
 
