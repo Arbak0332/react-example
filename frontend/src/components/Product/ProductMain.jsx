@@ -6,6 +6,7 @@ import DropdonwFilterList from "./DropdownFilterList"
 import FilterContext from "../../context/FIlterContext"
 import { useRef, useContext } from 'react'
 import Button from 'react-bootstrap/Button';
+import Pagination from "./Pagination"
 
 const ProductMain = () => {
 
@@ -13,7 +14,7 @@ const ProductMain = () => {
     const productsRef = useRef(null)
 
     const handleFilter = () => {
-        productsRef.current.filterProductsBy(query)
+        productsRef.current.searchProducts(query)
     }
 
     return (
@@ -30,6 +31,7 @@ const ProductMain = () => {
                     </div>
                     <ProductList ref={productsRef} />
                 </div>
+                <Pagination itemsPerPage={5}/>
             </main>
         </>
     )

@@ -6,7 +6,7 @@ import file from '../../config.json';
 /*
     ProductList component is simply a collection of products. 
     and it filtrs them in 2 ways:
-    -by calling 'filterProductsBy' function (for only side Filters like 'Categories', 'Brands', 'Materials', 'Colors')
+    -by calling 'searchProducts' function (for only side Filters like 'Categories', 'Brands', 'Materials', 'Colors')
     -by updating query parameter (for top and bottom Filters like 'Price', 'Pagination')
     It accept only map in parameters
 */
@@ -25,21 +25,20 @@ const ProductList = forwardRef(({ query }, ref) => {
         return result
     }
 
-    const searchProducts = async (searchParams) => {
-        const API_URL = file.API_URL
 
-        const params = convertToString(searchParams)
-            
-        const response = await fetch(`${API_URL}/products${params}`)
-        const data = await response.json()
+
+    const searchProducts = async (searchParams) => {
+        const data = await getResult(searchParams)
+
         setProducts(data)
     }
 
     useImperativeHandle(ref, () => ({
-        filterProductsBy(searchParams) {
-            searchProducts(searchParams)
-        }
-    }));
+
+        searchProducts,
+        getResult,
+        
+    }))
 
     const [products, setProducts] = useState([])
 
