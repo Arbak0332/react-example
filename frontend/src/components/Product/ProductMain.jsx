@@ -3,18 +3,18 @@ import FilterList from "./CheckboxFilterList"
 import Prompt from "../Common/Prompt"
 import DropdonwFilterList from "./DropdownFilterList"
 
-import FilterContext from "../../context/FIlterContext"
-import { useRef, useContext } from 'react'
+import FilterContext from "../../context/FilterContext"
+
+import { useContext } from 'react'
 import Button from 'react-bootstrap/Button';
-import Pagination from "./Pagination"
+import PaginationCustom from "./PaginationCustom"
 
 const ProductMain = () => {
 
-    const { query } = useContext(FilterContext)
-    const productsRef = useRef(null)
+    const { query, searchProducts } = useContext(FilterContext)
 
     const handleFilter = () => {
-        productsRef.current.searchProducts(query)
+        searchProducts(query)
     }
 
     return (
@@ -29,9 +29,11 @@ const ProductMain = () => {
                     <div className="mt-3 mb-5">
                         <DropdonwFilterList />
                     </div>
-                    <ProductList ref={productsRef} />
+                    <ProductList />
                 </div>
-                <Pagination itemsPerPage={5}/>
+                <div className="d-flex justify-content-center mb-5">
+                    <PaginationCustom />
+                </div>
             </main>
         </>
     )

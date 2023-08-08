@@ -1,10 +1,15 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useContext } from 'react'
-import FilterContext from '../../context/FIlterContext';
+import FilterContext from '../../context/FilterContext';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-const DropdownFilter = ({ title, options }) => {
-    const { addFilter } = useContext(FilterContext)
+const DropdownFilter = ({ title, options, filterName }) => {
+    const { setFilter, query, searchProducts } = useContext(FilterContext)
+
+    const clickHandler = (item)=>{
+        setFilter(filterName, item)
+        searchProducts(query)
+    }
 
     return (
         <Dropdown className="mx-2">
@@ -12,7 +17,7 @@ const DropdownFilter = ({ title, options }) => {
                 {
                     options.map(item => (
                     (
-                        <Dropdown.Item>{item}</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>clickHandler(item)}>{item}</Dropdown.Item>
                     )
                 ))
                 }

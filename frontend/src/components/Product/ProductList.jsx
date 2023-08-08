@@ -1,7 +1,6 @@
-import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
+import { useEffect, useContext} from 'react'
 import ProductCard from './ProductCard'
-
-import file from '../../config.json';
+import FilterContext from '../../context/FilterContext'
 
 /*
     ProductList component is simply a collection of products. 
@@ -11,42 +10,10 @@ import file from '../../config.json';
     It accept only map in parameters
 */
 
-const ProductList = forwardRef(({ query }, ref) => {
+const ProductList = ({ query }) => {
 
-    const convertToString = (searchParams)=>{
-        let result = '?'
-        if(searchParams === undefined)
-            return ''
-        
-        searchParams.forEach((value, key) => {
-            result = result.concat(`${key}=${value}&`)
-        });
+    const { products} = useContext(FilterContext)
 
-        return result
-    }
-
-
-
-    const searchProducts = async (searchParams) => {
-        const data = await getResult(searchParams)
-
-        setProducts(data)
-    }
-
-    useImperativeHandle(ref, () => ({
-
-        searchProducts,
-        getResult,
-        
-    }))
-
-    const [products, setProducts] = useState([])
-
-
-
-    useEffect(() => {
-        searchProducts(query)
-    }, [query])
 
     return (
         <div className="row mx-0">
@@ -72,5 +39,5 @@ const ProductList = forwardRef(({ query }, ref) => {
 
 
     )
-})
+}
 export default ProductList

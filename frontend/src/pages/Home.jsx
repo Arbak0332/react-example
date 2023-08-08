@@ -5,20 +5,24 @@ import Promotion from '../components/Home/Promotion'
 import Newsletter from '../components/Home/Newsletter'
 import Footer from '../components/Common/Footer'
 import ProductList from '../components/Product/ProductList'
-import Prompt  from '../components/Common/Prompt'
+import Prompt from '../components/Common/Prompt'
+
+import { FilterProvider } from "../context/FilterContext";
 
 
-const Home = ()=> {
+const Home = () => {
     return (
         <>
             <Navbar />
-            <Jumbotron/>
-            <Prompt text={'Most Popular'}/>
-            <ProductList/>
-            <Inspiration/>
-            <Promotion/>
-            <Newsletter/>
-            <Footer/>
+            <Jumbotron />
+            <Prompt text={'Most Popular'} />
+            <FilterProvider>
+                <ProductList />
+            </FilterProvider>
+            <Inspiration />
+            <Promotion />
+            <Newsletter />
+            <Footer />
         </>
     )
 }

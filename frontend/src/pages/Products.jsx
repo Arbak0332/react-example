@@ -1,19 +1,21 @@
-import { FilterProvider } from "../context/FIlterContext";
+import { FilterProvider } from "../context/FilterContext";
 
 import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
 import ProductMain from "../components/Product/ProductMain";
 
-const Products = ()=>{
+const Products = () => {
 
 
     return (
-        <FilterProvider>
-            <Navbar/>
-            <ProductMain/>
-            <Footer/>
+        <>
+            <Navbar />
+            <FilterProvider>
+                <ProductMain />
+            </FilterProvider >
+            <Footer />
 
-        </FilterProvider>
+        </>
     )
 }
 

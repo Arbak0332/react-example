@@ -3,7 +3,7 @@ import file from '../../config.json'
 import Button from 'react-bootstrap/Button'
 import Collapse from 'react-bootstrap/Collapse';
 import Form from 'react-bootstrap/Form';
-import FilterContext from '../../context/FIlterContext';
+import FilterContext from '../../context/FilterContext';
 
 
 const Item = ({ obj, itemClick }) => {
