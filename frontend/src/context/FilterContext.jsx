@@ -14,12 +14,15 @@ export function FilterProvider  ({children}){
 
     const convertToString = (searchParams) => {
         let result = '?'
-        if (searchParams === undefined)
+        if (typeof searchParams === 'undefined')
             return ''
+
 
         searchParams.forEach((value, key) => {
             result = result.concat(`${key}=${value}&`)
-        });
+        })
+
+        console.log(result)
 
         return result
     }
@@ -28,9 +31,9 @@ export function FilterProvider  ({children}){
 
     // it return products from query but does not show on screen
     const getProducts = async (searchParams) => {
-        // console.log(searchParams);
+        console.log(searchParams);
         let arg = searchParams
-        if (typeof searchParams !== 'undefined')
+        if (typeof searchParams.current !== 'undefined')
             arg = searchParams.current
 
 
