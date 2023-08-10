@@ -2,11 +2,12 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import FilterContext from '../../context/FilterContext';
 import Pagination from 'react-bootstrap/Pagination';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom'
 
 const PaginationCustom = () => {
 
     const [paginationItems, setPaginationItems] = useState([1])
-    const { products, getProducts, query, searchProducts, setFilter, currentPage, setCurrentPage } = useContext(FilterContext)
+    const { getProducts, query, searchProducts, setFilter, currentPage, setCurrentPage } = useContext(FilterContext)
 
 
     const quantityOfProducts = useRef(0)
@@ -38,7 +39,6 @@ const PaginationCustom = () => {
     const renderPagination = async (paginationQuery) => {
         setPaginationItems([1])
         const response = await getProducts(paginationQuery)
-        console.log(response.length);
         setQuantityOfProducts(response.length)
         
 
@@ -52,13 +52,9 @@ const PaginationCustom = () => {
 
         if (quantityOfProducts.current > 0) {
             
-            console.log(quantityOfProducts.current);
             setPaginationItems(prevArray => [...prevArray, currentPage + 1])
             setPaginationItems(prevArray => [...prevArray, -1])
         }
-
-        // console.log(`quantityOfProducts: ${quantityOfProducts.current}`);
-        console.log(paginationItems);
     }
 
     const scrollWindowUp = () => {
@@ -70,13 +66,14 @@ const PaginationCustom = () => {
 
     useEffect(() => {
 
-        const paginationQuery = new Map()
-
+        const paginationQuery = new Map([...query.current])
+        
         setLimit(query.current.get('limit'))
 
         paginationQuery.set('fields', 'id')
         paginationQuery.set('page', currentPage + 1)
         paginationQuery.set('limit', limit.current)
+        console.log(paginationQuery)
 
         setFilter('page', currentPage)
         scrollWindowUp()

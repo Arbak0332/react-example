@@ -4,14 +4,19 @@ import file from '../config.json';
 const FilterContext = createContext()
 
 export function FilterProvider  ({children}){
-
-    const [products, setProducts] = useState({})
     const [currentPage, setCurrentPage] = useState(1)
+    const [products, setProducts] = useState({})
 
     const query = useRef(new Map())
 
+    
+
     const setQuery = (newMap) => {
-        setCurrentPage(1)
+        if(query.current.get('page') === newMap.get('page'))
+            setCurrentPage(1)
+        
+        if(query.current.get('limit') !== newMap.get('limit'))
+            setCurrentPage(1)
         query.current = newMap
     }
 
@@ -30,7 +35,6 @@ export function FilterProvider  ({children}){
 
     // it return products from query but does not show on screen
     const getProducts = async (searchParams) => {
-        console.log(searchParams);
         let arg = searchParams
         if (typeof searchParams.current !== 'undefined')
             arg = searchParams.current
@@ -88,15 +92,17 @@ export function FilterProvider  ({children}){
     }
 
     return (
-        <FilterContext.Provider value={{ query,
+        <FilterContext.Provider value={{ 
+            query,
+            searchProducts, 
             addFilter,
             deleteFilter,
-            searchProducts, 
             products, 
             getProducts, 
-            setFilter, 
+            setFilter,
             currentPage, 
-            setCurrentPage }}>
+            setCurrentPage
+            }}>
             {children}
         </FilterContext.Provider>
     )
