@@ -12,11 +12,16 @@ export function FilterProvider  ({children}){
     
 
     const setQuery = (newMap) => {
-        if(query.current.get('page') === newMap.get('page'))
+        if(query.current.get('page') === newMap.get('page')){
+
+            setCurrentPage(0)
             setCurrentPage(1)
+        }
         
-        if(query.current.get('limit') !== newMap.get('limit'))
+        if(query.current.get('limit') !== newMap.get('limit')){
+            setCurrentPage(0)
             setCurrentPage(1)
+        }
         query.current = newMap
     }
 

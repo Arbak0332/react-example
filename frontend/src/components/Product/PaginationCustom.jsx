@@ -51,7 +51,7 @@ const PaginationCustom = () => {
         }
 
         if (quantityOfProducts.current > 0) {
-            
+            console.log(quantityOfProducts.current);
             setPaginationItems(prevArray => [...prevArray, currentPage + 1])
             setPaginationItems(prevArray => [...prevArray, -1])
         }
@@ -81,17 +81,6 @@ const PaginationCustom = () => {
         renderPagination(paginationQuery)
 
     }, [currentPage])
-
-    //     <Pagination.Item>{1}</Pagination.Item>
-    //     <Pagination.Ellipsis />
-    //     <Pagination.Item>{10}</Pagination.Item>
-    //     <Pagination.Item>{11}</Pagination.Item>
-    //     <Pagination.Item>{13}</Pagination.Item>
-    //     <Pagination.Item disabled>{14}</Pagination.Item>
-
-    //     <Pagination.Item>{20}</Pagination.Item>  \
-
-
 
     return (
         <Pagination>

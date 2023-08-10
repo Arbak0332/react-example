@@ -26,7 +26,7 @@ const ProductInfo = () => {
         <div className="container my-7">
             <div className="row mx-xl-7 ">
                 <div className="col-md-6 mb-3">
-                    <img src={`${file.IMAGE_STORAGE_URL}${product.image_name}`} alt="" className="card-img-top" />
+                    <img src={`${file.IMAGE_STORAGE_URL}/products/${product.image_name}`} alt="" className="card-img-top" />
                 </div>
                 <div className="col-md-6 d-flex flex-column justify-content-between">
                     <div>

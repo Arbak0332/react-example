@@ -6,7 +6,7 @@ const DropdonwFilterList = () => {
         <div className="d-flex flex-row justify-content-end">
 
             <DropdownFilter title={'Sort'} options={['lowest price', 'highest price']} filterName={'sort'} />
-            <DropdownFilter title={'Show'} options={['3', '6', '9', '12', '15', '18', '21']} filterName={'limit'}/>
+            <DropdownFilter title={'Show'} options={['12', '24', '36', '48']} filterName={'limit'}/>
         </div>
     )
 
