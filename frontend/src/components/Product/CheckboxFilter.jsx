@@ -26,7 +26,7 @@ const Filter = ({ filterName, displayName }) => {
     const [resources, setResources] = useState([]) // filters 
     const [expand, setExpand] = useState(false)  // is filter list expanded
     const [icon, setIcon] = useState('bi-plus') // plus / minus icons
-    const { addFilter, deleteFilter } = useContext(FilterContext)
+    const { addFilter, deleteFilter, query, searchProducts } = useContext(FilterContext)
 
     const getResource = async () => {
         const API_URL = file.API_URL
@@ -40,6 +40,8 @@ const Filter = ({ filterName, displayName }) => {
             deleteFilter(filterName, name)
         else
             addFilter(filterName, name)
+
+        searchProducts(query)
     }
 
     const ExpandListClickHandle = () => {

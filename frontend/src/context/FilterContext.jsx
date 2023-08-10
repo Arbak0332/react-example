@@ -4,23 +4,30 @@ import file from '../config.json';
 const FilterContext = createContext()
 
 export function FilterProvider  ({children}){
+    const [currentPage, setCurrentPage] = useState(1)
+    const [products, setProducts] = useState({})
 
     const query = useRef(new Map())
-    const setQuery = (newMap)=>{
+
+    
+
+    const setQuery = (newMap) => {
+        if(query.current.get('page') === newMap.get('page'))
+            setCurrentPage(1)
+        
+        if(query.current.get('limit') !== newMap.get('limit'))
+            setCurrentPage(1)
         query.current = newMap
     }
 
-    const [products, setProducts] = useState({})
-
     const convertToString = (searchParams) => {
         let result = '?'
-        if (searchParams === undefined)
+        if (typeof searchParams === 'undefined')
             return ''
 
         searchParams.forEach((value, key) => {
             result = result.concat(`${key}=${value}&`)
-        });
-
+        })
         return result
     }
 
@@ -28,9 +35,8 @@ export function FilterProvider  ({children}){
 
     // it return products from query but does not show on screen
     const getProducts = async (searchParams) => {
-        // console.log(searchParams);
         let arg = searchParams
-        if (typeof searchParams !== 'undefined')
+        if (typeof searchParams.current !== 'undefined')
             arg = searchParams.current
 
 
@@ -41,6 +47,7 @@ export function FilterProvider  ({children}){
         const data = await response.json()
         return data
     }
+    
     // it shows products on screen
     const searchProducts = async (searchParams) => {
         const data = await getProducts(searchParams)
@@ -85,7 +92,17 @@ export function FilterProvider  ({children}){
     }
 
     return (
-        <FilterContext.Provider value={{ query, addFilter, deleteFilter, searchProducts, products, getProducts, setFilter }}>
+        <FilterContext.Provider value={{ 
+            query,
+            searchProducts, 
+            addFilter,
+            deleteFilter,
+            products, 
+            getProducts, 
+            setFilter,
+            currentPage, 
+            setCurrentPage
+            }}>
             {children}
         </FilterContext.Provider>
     )
