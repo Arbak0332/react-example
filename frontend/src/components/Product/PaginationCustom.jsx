@@ -4,9 +4,9 @@ import Pagination from 'react-bootstrap/Pagination';
 import Button from 'react-bootstrap/Button';
 
 const PaginationCustom = () => {
-    const [currentPage, setCurrentPage] = useState(1)
+
     const [paginationItems, setPaginationItems] = useState([1])
-    const { products, getProducts, query, searchProducts, setFilter } = useContext(FilterContext)
+    const { products, getProducts, query, searchProducts, setFilter, currentPage, setCurrentPage } = useContext(FilterContext)
 
 
     const quantityOfProducts = useRef(0)
@@ -20,9 +20,6 @@ const PaginationCustom = () => {
     const setQuantityOfProducts = (value) => {
         quantityOfProducts.current = value
     }
-
-
-
 
     const handleNextPage = () => {
         if (quantityOfProducts.current > 0)
@@ -41,8 +38,9 @@ const PaginationCustom = () => {
     const renderPagination = async (paginationQuery) => {
         setPaginationItems([1])
         const response = await getProducts(paginationQuery)
-
+        console.log(response.length);
         setQuantityOfProducts(response.length)
+        
 
         if (currentPage > 4)
             setPaginationItems(prevArray => [...prevArray, -1])
@@ -53,7 +51,8 @@ const PaginationCustom = () => {
         }
 
         if (quantityOfProducts.current > 0) {
-
+            
+            console.log(quantityOfProducts.current);
             setPaginationItems(prevArray => [...prevArray, currentPage + 1])
             setPaginationItems(prevArray => [...prevArray, -1])
         }
@@ -65,7 +64,7 @@ const PaginationCustom = () => {
     const scrollWindowUp = () => {
         window.scrollTo({
             top: 150,
-            behavior: "instant", // You can also use "auto" or "instant" for different scroll behaviors.
+            behavior: "instant", 
         });
     }
 

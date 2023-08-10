@@ -5,25 +5,24 @@ const FilterContext = createContext()
 
 export function FilterProvider  ({children}){
 
+    const [products, setProducts] = useState({})
+    const [currentPage, setCurrentPage] = useState(1)
+
     const query = useRef(new Map())
-    const setQuery = (newMap)=>{
+
+    const setQuery = (newMap) => {
+        setCurrentPage(1)
         query.current = newMap
     }
-
-    const [products, setProducts] = useState({})
 
     const convertToString = (searchParams) => {
         let result = '?'
         if (typeof searchParams === 'undefined')
             return ''
 
-
         searchParams.forEach((value, key) => {
             result = result.concat(`${key}=${value}&`)
         })
-
-        console.log(result)
-
         return result
     }
 
@@ -44,6 +43,7 @@ export function FilterProvider  ({children}){
         const data = await response.json()
         return data
     }
+    
     // it shows products on screen
     const searchProducts = async (searchParams) => {
         const data = await getProducts(searchParams)
@@ -88,7 +88,15 @@ export function FilterProvider  ({children}){
     }
 
     return (
-        <FilterContext.Provider value={{ query, addFilter, deleteFilter, searchProducts, products, getProducts, setFilter }}>
+        <FilterContext.Provider value={{ query,
+            addFilter,
+            deleteFilter,
+            searchProducts, 
+            products, 
+            getProducts, 
+            setFilter, 
+            currentPage, 
+            setCurrentPage }}>
             {children}
         </FilterContext.Provider>
     )
