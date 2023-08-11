@@ -1,13 +1,13 @@
 const addresses = [
     {
         street: '123 Main St',
-        city: 'Anytown',
+        city: 'Kielce',
         post_code: '12345',
         address_type_id: 1
     },
     {
         street: '456 Elm St',
-        city: 'Anytown',
+        city: 'Warszawa',
         post_code: '12345',
         address_type_id: 2
     },
