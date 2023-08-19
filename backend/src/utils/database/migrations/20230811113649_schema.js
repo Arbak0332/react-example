@@ -98,7 +98,7 @@ exports.up = function (knex) {
       })
       .createTable("status", (table) => {
         table.increments("id").primary()
-        table.string("name", 10).notNullable() // 'Checkout, Paid, Sent, Finished'
+        table.string("name", 10).notNullable() // 'Checkout, Paid, Sent, Finished, Error'
       })
       .createTable("order", (table) => {
         table.increments("id").primary()

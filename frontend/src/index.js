@@ -1,9 +1,10 @@
-
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-const root = ReactDOM.createRoot(document.getElementById("root"));
+import { CartContextProvider } from "./context/CartContext"
+import MiniCart from "./components/Order/MiniCart"
+import React from "react"
+import ReactDOM from "react-dom/client"
+import App from "./App"
+import { BrowserRouter } from "react-router-dom"
+const root = ReactDOM.createRoot(document.getElementById("root"))
 // root.render(
 //   <React.StrictMode>
 //     <BrowserRouter>
@@ -12,9 +13,10 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 //   </React.StrictMode>
 // );
 root.render(
-
-    <BrowserRouter>
+  <BrowserRouter>
+    <CartContextProvider>
       <App />
-    </BrowserRouter>
-
-);
+      <MiniCart/>
+    </CartContextProvider>
+  </BrowserRouter>
+)

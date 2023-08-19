@@ -14,6 +14,9 @@ const statuses = [
   {
     name: "Finished",
   },
+  {
+    name: "Error",
+  },
 ]
 
 exports.seed = async function (knex) {
