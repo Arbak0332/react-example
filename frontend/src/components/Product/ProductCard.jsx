@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
                     <div className="quick-view">Quick view</div>
                     <div className="card-body text-center">
                         <p className="card-text">{product.name}</p>
-                        <p className="card-text">£{product.price}</p>
+                        <p className="card-text">{product.price}$</p>
                     </div>
                 </Link>
             </div>
