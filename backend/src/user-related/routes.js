@@ -7,4 +7,5 @@ const userRoutes = require('./user/userRoutes')
 router.use('', authRoutes)
 router.use('', userRoutes)
 
+
 module.exports = router

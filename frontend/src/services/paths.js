@@ -2,7 +2,8 @@ const PATH = {
     HOME : '/',
     PRODUCTS: '/products',
     ABOUTUS:'/aboutUs',
-    ADMIN:'/admin'
+    ADMIN:'/admin',
+    LOGIN:'/login'
 }
 
 export default PATH
