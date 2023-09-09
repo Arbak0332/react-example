@@ -16,7 +16,7 @@ root.render(
   <BrowserRouter>
     <CartContextProvider>
       <App />
-      <MiniCart/>
+
     </CartContextProvider>
   </BrowserRouter>
 )

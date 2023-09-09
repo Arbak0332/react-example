@@ -14,6 +14,17 @@ export function CartContextProvider({ children }) {
         }, 3000);
     }
 
+    const handleHover = ()=>{
+        if(products.length !== 0){
+            console.log('true');
+            setVisibility(true)
+        }
+        else{
+            console.log('false');
+            setVisibility(false)
+        }
+    }
+
     const getProducts = ()=>{
         const tmp = localStorage.getItem('products')
         if(tmp)
@@ -23,6 +34,7 @@ export function CartContextProvider({ children }) {
     const addProduct = (product, quantity)=>{
         console.log(product);
         setProducts(prev=> [...prev, product])
+        setVisibility(true)
     }
 
     const changeQuantity = (product, quantity)=>{
@@ -38,7 +50,7 @@ export function CartContextProvider({ children }) {
 
 
     return (
-        <CartContext.Provider value={{ products, addProduct, deleteProduct, visible, setVisibility, showMiniCartTimeout }}>
+        <CartContext.Provider value={{ products, addProduct, deleteProduct, visible, setVisibility, handleHover, showMiniCartTimeout }}>
             {children}
         </CartContext.Provider>
     )

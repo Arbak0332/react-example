@@ -7,10 +7,7 @@ const MiniCart = () => {
 
     return (
 
-        <div className={`mini_cart_wrapper  d-flex justify-content-center ${visible ? '' : 'invisible'}`}
-            onMouseEnter={() => setVisibility(true)}
-            onMouseLeave={() => setVisibility(false)}
-        >
+        <div className={`dialog-wrapper-mini-cart ${visible ? 'show-dialog' : ''}`}>
             <CartItem />
         </div >
 

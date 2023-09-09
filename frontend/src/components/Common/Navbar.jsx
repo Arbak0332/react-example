@@ -1,36 +1,67 @@
 import Tabs from "./Tabs"
-import { useContext } from "react"
+import { decodeToken, isExpired } from "react-jwt";
+import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
 import CartContext from "../../context/CartContext"
+import Cookies from 'js-cookie';
+import paths from '../../services/paths'
+import MiniCart from "../Order/MiniCart";
+import UserOptions from "../User/UserOptions"
+import Logo from "./Logo";
+
 
 const Navbar = () => {
-    
-    const { setVisibility } = useContext(CartContext)
+    const { visible } = useContext(CartContext)
+
+    const [userVisibility, setUserVisibility] = useState(false)
+
+    const isLogged = () => {
+        const token = Cookies.get('jwt')
+
+        if (token === undefined)
+            return false
+
+
+        if (isExpired(token))
+            return false
+        return true
+    }
+
+    const userDestination = () => {
+        if (isLogged())
+            return `${paths.ACCOUNT}`
+        else
+            return `${paths.AUTHENTICATE}`
+    }
+
+
+
+
 
     return (
         <>
             <header>
                 <nav className="navbar navbar-expand-md bg-navbar navbar-light fixed-top first-nav">
                     <div className="container-fluid">
-                        <a className="navbar-brand me-3 me-md-0" href="/#">MEBEL</a>
+                        <Logo/>
                         <ul className="navbar-nav flex-row ms-auto me-lg-0 nav-icons">
-                            <li>
-                                <a className="nav-link" href="/#">
+                            <li className="dialog-container">
+                                <Link className="nav-link" to={userDestination()}>
                                     <i className="bi bi-person"></i>
-                                </a>
+                                </Link>
+                                <UserOptions />
                             </li>
                             <li>
                                 <a className="nav-link" href="/#">
                                     <i className="bi bi-heart"></i>
                                 </a>
                             </li>
-                            <li>
-                                <a className="nav-link" 
-                                    href="/#"
-                                    onMouseEnter={()=> setVisibility(true)}
-                                    onMouseLeave={()=> setVisibility(false)}    
-                                >
+                            <li className={`dialog-container ${visible ? 'show-dialog':''}`} >
+                                <a className="nav-link"
+                                    href="/#">
                                     <i className="bi bi-cart3"></i>
                                 </a>
+                                <MiniCart />
                             </li>
                         </ul>
                         <button className="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
