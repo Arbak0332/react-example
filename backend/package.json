@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "ENV=development nodemon app.js",
-    "make":"knex migrate:make schema2 --knexfile src/utils/database/knexfile.js",
-    "up": "npx knex migrate:up 20230811113649_schema.js --knexfile src/utils/database/knexfile.js",
-    "down": "npx knex migrate:down 20230811113649_schema.js --knexfile src/utils/database/knexfile.js ",
+    "make": "knex migrate:make schema2 --knexfile src/utils/database/knexfile.js",
+    "up": "npx knex migrate:up 20230819145318_schema2.js --knexfile src/utils/database/knexfile.js",
+    "down": "npx knex migrate:down  --knexfile src/utils/database/knexfile.js ",
     "rollback": "npx knex migrate:rollback --all --knexfile src/utils/database/knexfile.js",
     "seed": "npx knex seed:run --knexfile src/utils/database/knexfile.js",
     "prepare_db": "npm run down && npm run up && npm run seed",
@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "2.1227.0",
+    "axios": "1.4.0",
     "bcryptjs": "2.4.3",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
@@ -28,9 +29,9 @@
     "http-status-codes": "2.2.0",
     "jsonwebtoken": "9.0.0",
     "knex": "2.5.1",
+    "node-fetch": "2.6.13",
     "nodemon": "2.0.19",
     "objection": "3.0.1",
-    "passport": "0.6.0",
     "passport-google-oauth20": "2.0.0",
     "pg": "8.8.0",
     "uuid": "9.0.0"
