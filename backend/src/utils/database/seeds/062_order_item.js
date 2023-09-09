@@ -23,5 +23,5 @@ const order_items = [
 exports.seed = async function (knex) {
   Model.knex(knex)
 
-  await OrderItem.query().insert(order_items)
+  // await OrderItem.query().insert(order_items)
 }
