@@ -5,30 +5,40 @@ const express = require('express')
 const app = express()
 const setupDatabase = require('./src/utils/database')
 const cors = require('cors');
-const passport = require('passport')
+
 const cookieParser = require('cookie-parser');
 
 
 
 
 // middleware
+
+
+
+app.use(
+    cors({
+        allowedHeaders: [
+            "Origin",
+            "X-Requested-With",
+            "Content-Type",
+            "Accept",
+            "X-Access-Token",
+            "Access-Control-Allow-Methods",
+        ], 
+        credentials: true,
+        origin: "http://localhost:3000",
+        methods: ["GET", "PUT", "POST", "DELETE"],
+        preflightContinue: false,
+    })
+)
+
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser())
-app.use(passport.initialize());
-app.use(
-  cors({
-    allowedHeaders: ["Content-Type"], // you can change the headers
-    origin: "http://localhost:3000",
-    methods: ["GET", "PUT", "POST", "DELETE"],
-    preflightContinue: false,
-  })
-);
+
 
 // routes
-
-
 const productRoutes = require('./src/product-related/routes')
 const userRoutes = require('./src/user-related/routes')
 
