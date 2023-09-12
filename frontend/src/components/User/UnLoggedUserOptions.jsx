@@ -1,4 +1,3 @@
-import LoggedUserOptions from "./LoggedUserOptions"
 import { Link } from "react-router-dom"
 import file from '../../services/paths'
 import BasicButtons from './BasicButtons'
@@ -6,7 +5,7 @@ const UnLoggedUserOptions = () => {
     return (
         <>
             <Link to={`${file.AUTHENTICATE}`} className="link-height">
-                <button className="btn-custom--user-option btn-custom--user-option--login">
+                <button className="btn-custom btn-custom--green w-100 h-100">
                     Login
                 </button>
             </Link>
