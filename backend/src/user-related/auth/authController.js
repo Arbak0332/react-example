@@ -1,13 +1,10 @@
 const jwt = require("jsonwebtoken")
 const User = require("../../utils/database/models/user")
-const { BadRequestError } = require("../../utils/error")
+const { BadRequestError, NotFoundError } = require("../../utils/error")
 const { StatusCodes } = require("http-status-codes")
 const { getGoogleAuthTokens, getGoogleUser } = require("./authUtils")
-const { NotFoundError } = require("objection")
+const {cookieOptions} = require('../../utils/cookieOptions')
 
-const cookieOptions = {
-    maxAge: 3600 * 1000, // expires in 1 hour
-}
 
 const googleSignIn = async (req, res) => {
     const code = req.query.code
@@ -98,8 +95,8 @@ const register = async (req, res) => {
 
 const login = async (req, res)=>{
     const user = await User.query().where({email: req.body.email})
-
-    if(!user)
+    
+    if(!user[0])
         throw new NotFoundError('User with provided email does not exist.')
 
     if(!user[0].comparePassword(req.body.password))
