@@ -22,7 +22,7 @@ class User extends Model {
 
     async $beforeInsert(queryContext) {
         await super.$beforeInsert(queryContext)
-        
+
         if (!this.isValidEmail(this.email)) return
 
         if (!this.password) return
@@ -36,10 +36,19 @@ class User extends Model {
                 id: this.id,
                 first_name: this.first_name,
                 last_name: this.last_name,
+                order_id: null,
             },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES }
         )
+    }
+    setOrderId(oldToken, order_id) {
+        const decodedToken = jwt.decode(oldToken, { complete: true })
+        decodedToken.payload.order_id = order_id
+        console.log(decodedToken)
+        return jwt.sign(decodedToken.payload, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES,
+        })
     }
 
     async comparePassword(password) {
