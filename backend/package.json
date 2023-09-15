@@ -32,7 +32,6 @@
     "node-fetch": "2.6.13",
     "nodemon": "2.0.19",
     "objection": "3.0.1",
-    "passport-google-oauth20": "2.0.0",
     "pg": "8.8.0",
     "uuid": "9.0.0"
   },
