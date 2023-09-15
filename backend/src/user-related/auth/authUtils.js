@@ -40,8 +40,11 @@ const getGoogleUser = async (id_token, access_token) => {
     return res.data
 }
 
+const createAnonymousUser = async ()=>{
+
+}
 
 module.exports = {
     getGoogleAuthTokens,
     getGoogleUser,
-}
+    createAnonymousUser}
