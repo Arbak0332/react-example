@@ -13,7 +13,6 @@ const UserOptions = () => {
 
     useEffect(() => {
 
-        console.log(`${document.cookie}`)
         const token = Cookie.get('jwt')
         if (token === undefined)
             return

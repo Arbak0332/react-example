@@ -2,9 +2,10 @@ import { useContext } from "react"
 import { Link } from 'react-router-dom'
 import CartContext from "../../context/CartContext"
 import file from '../../config.json'
+import PATH from "../../services/paths"
 import Button from 'react-bootstrap/Button'
 
-const Item = ({lastItem})=>{
+const Item = ({ lastItem }) => {
 
     return (
         <div className="mini_cart_item_wrapper">
@@ -32,7 +33,7 @@ const Item = ({lastItem})=>{
                     move to wish list
                 </a>
             </div>
-            <Link to={``} className="product-link">
+            <Link to={`${PATH.ORDER}`} className="product-link">
                 <Button className="w-100 btn-custom--green mt-2">Go to checkout!</Button>
             </Link>
 
@@ -40,17 +41,19 @@ const Item = ({lastItem})=>{
     )
 }
 
-const EmptyItem = ()=>{
+const EmptyItem = () => {
     return (
         <div className="d-flex flex-column justify-content-center">
             <h3>Your cart is empty</h3>
             <h6>If you don't know what to buy check out the latest offer</h6>
-            <button className="btn-custom btn-custom--green">Check latest</button>
+            <Link to={`${PATH.PRODUCTS}`} >
+                <button className="w-100 btn-custom btn-custom--green">Check latest</button>
+            </Link>
         </div>
     )
 }
 
-const CartItem = () => {
+const MiniCartItem = () => {
 
     const { products } = useContext(CartContext)
 
@@ -61,12 +64,12 @@ const CartItem = () => {
             {
                 typeof lastItem !== 'undefined' ?
                     (
-                        
-                        <Item lastItem={lastItem}/>
+
+                        <Item lastItem={lastItem} />
                     )
                     :
                     (
-                        <EmptyItem/>
+                        <EmptyItem />
                     )
             }
         </>
@@ -74,4 +77,4 @@ const CartItem = () => {
 
 }
 
-export default CartItem
+export default MiniCartItem

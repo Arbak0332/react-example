@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import CartContext from "../../context/CartContext"
-import CartItem from "./CartItem"
+import MiniCartItem from "./MiniCartItem"
 const MiniCart = () => {
 
     const { visible, setVisibility} = useContext(CartContext)
@@ -8,7 +8,7 @@ const MiniCart = () => {
     return (
 
         <div className={`dialog-wrapper-mini-cart ${visible ? 'show-dialog' : ''}`}>
-            <CartItem />
+            <MiniCartItem />
         </div >
 
 

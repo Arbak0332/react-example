@@ -39,9 +39,10 @@ const Login = () => {
                     ...formData
                 })
             })
-            console.log(response)
             if(response.status === 200)
                 navigate('/')
+            else
+                setError('Invalid email or password.')
 
         } catch (error) {
             setError('Invalid email or password.')
