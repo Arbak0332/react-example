@@ -91,7 +91,10 @@ exports.up = function (knex) {
                 table.foreign("role_id").references("role.id")
             })
             .createTable("anonymous_user", (table) => {
-                table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"))
+                table
+                    .uuid("id")
+                    .primary()
+                    .defaultTo(knex.raw("gen_random_uuid()"))
                 table.date("create_date").notNullable()
             })
             .createTable("rating", (table) => {
@@ -108,14 +111,10 @@ exports.up = function (knex) {
                 table.string("name", 10).notNullable() // 'Checkout, Paid, Sent, Finished, Error'
             })
             .createTable("order", (table) => {
-                table
-                    .uuid("id")
-                    .primary()
-                    .defaultTo(knex.raw("gen_random_uuid()"))
+                table.uuid("id").primary().defaultTo(knex.fn.uuid())
                 table.integer("user_id").unsigned()
                 table.uuid("anonymous_user_id")
-                table.integer("address_id").unsigned().notNullable() // primary user address
-                table.date("created_at").notNullable()
+                table.integer("address_id").unsigned() // primary user address
                 table.integer("status_id").defaultTo(1).notNullable() // default Checkout
                 table.foreign("user_id").references("user.id")
                 table
@@ -123,15 +122,17 @@ exports.up = function (knex) {
                     .references("anonymous_user.id")
                 table.foreign("address_id").references("address.id")
                 table.foreign("status_id").references("status.id")
+                table.timestamps(true, true)
             })
             .createTable("order_item", (table) => {
                 table.increments("id").primary()
                 table.integer("product_id").unsigned().notNullable()
-                table.integer("quantity").unsigned().notNullable()
+                table.integer("quantity").notNullable().checkPositive();
                 table.uuid("order_id").notNullable()
 
                 table.foreign("product_id").references("product.id")
                 table.foreign("order_id").references("order.id")
+                table.timestamps(true, true)
             })
     )
 }

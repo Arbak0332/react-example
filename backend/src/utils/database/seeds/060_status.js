@@ -2,21 +2,26 @@ const Status = require("../models/status")
 const { Model } = require("objection")
 
 const statuses = [
-  {
-    name: "Checkout",
-  },
-  {
-    name: "Paid",
-  },
-  {
-    name: "Sent",
-  },
-  {
-    name: "Finished",
-  },
-  {
-    name: "Error",
-  },
+    {
+        id: 1,
+        name: "Checkout",
+    },
+    {
+        id: 2,
+        name: "Paid",
+    },
+    {
+        id: 3,
+        name: "Sent",
+    },
+    {
+        id: 4,
+        name: "Delivered",
+    },
+    {
+        id: 0,
+        name: "Error",
+    },
 ]
 
 exports.seed = async function (knex) {

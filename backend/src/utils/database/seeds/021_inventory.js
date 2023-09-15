@@ -4,7 +4,7 @@ const { Model } = require("objection");
 const inventories = [
   {
     product_id: 1,
-    quantity: 15,
+    quantity: 1000,
   },
   {
     product_id: 2,
