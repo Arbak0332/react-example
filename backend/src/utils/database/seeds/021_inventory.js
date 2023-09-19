@@ -8,11 +8,11 @@ const inventories = [
   },
   {
     product_id: 2,
-    quantity: 1,
+    quantity: 1000,
   },
   {
     product_id: 3,
-    quantity: 1,
+    quantity: 1000,
   },
   {
     product_id: 4,
