@@ -4,87 +4,98 @@ const Inventory = require("../../utils/database/models/inventory")
 const { Model } = require("objection")
 const { BadRequestError } = require("../../utils/error")
 
-const handleCreate = async (product_id, quantity, user) => {
-    try {
-        const result = Model.transaction(async (trx) => {
-            /* 
-                check if is sufficient amount of products in Inventory
-                and compare it with products in Checkout state that are in Order table
-            */
-            const isSufficient = await isEnough(trx, product_id, quantity)
+/**
+ *  Thah function have
+ *
+ */
+const handleCreate = async (product_id, quantity, userQueryObject) => {
+    return await Model.transaction(async (trx) => {
+        // Check if is sufficient amount of products in inventory.
+        const isSufficient = await isEnough(trx, product_id, quantity)
+        if (!isSufficient) return false
 
-            if (user.order_id === null) {
-                const newOrder = await Order.query(trx).insert({
-                    user_id: user.user_id,
-                    anonymous_user_id: user.anonymous_user_id,
-                })
-
-                // console.log(newOrder)
-                user.order_id = newOrder.id
-            }
-
-            if (isSufficient) {
-                const newOrderItem = await OrderItem.query(trx).insert({
-                    product_id: product_id,
-                    quantity: quantity,
-                    order_id: user.order_id,
-                })
-                if(!newOrderItem)
-                    throw new BadRequestError('Cannot create order item.')
-                // console.log(newOrderItem);
-                return true
-            } else {
-                return false
-            }
-        })
-        return result
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-const isEnough = async (trx, product_id, quantity) => {
-    try {
-        const productsInInvetory = await Inventory.query(trx).where({
-            product_id: product_id,
+        // Check if order cart exists in 'Checkout' state.
+        const order = await Order.query(trx).where({
+            ...userQueryObject,
+            status_id: 1,
         })
 
-        const productsInCheckoutState = await OrderItem.query(trx)
-            .select("order_item.quantity")
-            .join("order", function () {
-                this.on("order.id", "=", "order_item.order_id")
-            })
-            .where({
-                "order.status_id": 1,
-                "order_item.product_id": product_id,
-            })
-        const sumOfProducts = productsInCheckoutState.reduce(
-            (accumulator, currentValue) => accumulator + currentValue.quantity,
-            0
+        let tmpOrder = order[0]
+
+        // if order cart in 'Checkout' state does not exist then create new order
+        if (!order[0]) {
+            const newOrder = await Order.query(trx).insert(userQueryObject)
+            tmpOrder = newOrder
+        }
+
+        return await createOrUpdateOrderItem(
+            trx,
+            tmpOrder.id,
+            product_id,
+            quantity
         )
-        // console.log(productsInInvetory[0].quantity)
-        // console.log(sumOfProducts + quantity)
-
-        if (sumOfProducts + quantity <= productsInInvetory[0].quantity)
-            return true
-        else return false
-    } catch (error) {
-        console.error(error)
-    }
+    })
 }
 
-const ifCartExist = async (trx, order_id) => {
-    try {
-        const result = await Order.query(trx).where({})
-    } catch (error) {
-        console.error(error)
-    }
+/* 
+    Check if is sufficient amount of products in Inventory
+    and compare it with products in Checkout state that are in Order table
+*/
+const isEnough = async (trx, product_id, quantity) => {
+    const productsInInvetory = await Inventory.query(trx).where({
+        product_id: product_id,
+    })
+
+    const productsInCheckoutState = await OrderItem.query(trx)
+        .select("order_item.quantity")
+        .join("order", function () {
+            this.on("order.id", "=", "order_item.order_id")
+        })
+        .where({
+            "order.status_id": 1,
+            "order_item.product_id": product_id,
+        })
+    const sumOfProducts = productsInCheckoutState.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.quantity,
+        0
+    )
+    // console.log(productsInInvetory[0].quantity)
+    // console.log(sumOfProducts + quantity)
+
+    if (sumOfProducts + quantity <= productsInInvetory[0].quantity) return true
+    else return false
 }
 
-const signToken = (obj)=>{
-    
+const createOrUpdateOrderItem = async (trx, order_id, product_id, quantity) => {
+    const orderItem = await OrderItem.query(trx).where({
+        order_id: order_id,
+        product_id: product_id,
+    })
+    if (!orderItem[0]) {
+        return await OrderItem.query(trx).insert({
+            product_id: product_id,
+            quantity: quantity,
+            order_id: order_id,
+        })
+    }
+    const newQuantity = orderItem[0].quantity + quantity
+    return await updateOrderItem(trx, orderItem[0].id, newQuantity)
+}
+
+const updateOrderItem = async (trx, order_item_id, quantity) => {
+    console.log(order_item_id)
+    console.log(quantity)
+    const updatedOrderItem = await OrderItem.query(trx).patchAndFetch({
+        id: order_item_id,
+        quantity: quantity,
+    })
+    if (!updatedOrderItem)
+        throw new BadRequestError("Cannot create new order item.")
+
+    return updatedOrderItem
 }
 
 module.exports = {
     handleCreate,
+    updateOrderItem,
 }

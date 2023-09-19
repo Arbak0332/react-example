@@ -3,21 +3,20 @@ const { NotFoundError, BadRequestError } = require("../../utils/error")
 const Order = require("../../utils/database/models/order")
 
 
-
-
-
 const getOrderById = async (req, res) => {
-    const { id } = req.params
-    const order = await Order.query().findById(id)
+    console.log("getOrderById")
+    const { userQueryObject } = req.user
+    const order = await Order.query().where(userQueryObject)
 
     if (!order) {
         throw new NotFoundError("Order not found.")
     }
 
-    res.status(StatusCodes.OK).json(order)
+    res.status(StatusCodes.OK).json()
 }
 
 const updateOrderById = async (req, res) => {
+    console.log("updateOrderById")
     const { id } = req.params
     const {
         /* extract and validate updated order data from req.body */
@@ -39,6 +38,7 @@ const updateOrderById = async (req, res) => {
 }
 
 const deleteOrderById = async (req, res) => {
+    console.log("deleteOrderById")
     const { id } = req.params
     const order = await Order.query().findByIdAndDelete(id)
 

@@ -4,13 +4,13 @@ const router = express.Router()
 const {
     getOrderById,
     updateOrderById,
-    deleteOrderById
-} = require('./orderController')
+    deleteOrderById,
+} = require("./orderController")
 
-router.route('/orders/:id')
+router
+    .route("/orders/:id")
     .get(getOrderById)
     .patch(updateOrderById)
     .delete(deleteOrderById)
-
 
 module.exports = router

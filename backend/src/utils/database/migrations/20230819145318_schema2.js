@@ -125,7 +125,7 @@ exports.up = function (knex) {
                 table.timestamps(true, true)
             })
             .createTable("order_item", (table) => {
-                table.increments("id").primary()
+                table.uuid("id").primary().defaultTo(knex.fn.uuid())
                 table.integer("product_id").unsigned().notNullable()
                 table.integer("quantity").notNullable().checkPositive();
                 table.uuid("order_id").notNullable()

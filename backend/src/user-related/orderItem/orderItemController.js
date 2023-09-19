@@ -1,69 +1,72 @@
 const { StatusCodes } = require("http-status-codes")
 const { NotFoundError, BadRequestError } = require("../../utils/error")
-const { handleCreate } = require("./orderItemUtils")
+const { handleCreate, updateOrderItem } = require("./orderItemUtils")
 const { cookieOptions } = require("../../utils/cookieOptions")
+const OrderItem = require("../../utils/database/models/order_item")
 const Order = require("../../utils/database/models/order")
-const jwt = require('jsonwebtoken')
+const {getJWT} = require('../order/orderUtils')
 
 const createOrderItem = async (req, res) => {
+    console.log("createOrderItem")
     const { product_id, quantity } = req.body
-
-    const result = await handleCreate(product_id, quantity, req.user)
-
-    if (!result)
-        throw new BadRequestError(
-            "There is not sufficient amount of products in inventory."
-        )
-
-    const jwtValue = jwt.sign(
-        req.user,
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES }
+    const { userQueryObject } = req.user
+    const result = await handleCreate(
+        product_id,
+        quantity,
+        userQueryObject 
     )
 
-    res.status(StatusCodes.CREATED)
-        .cookie("jwt", jwtValue, cookieOptions)
-        .json()
+
+
+    if (!result)
+        throw new BadRequestError("There are not enough products in stock.")
+
+    const token = getJWT(userQueryObject)
+    res.status(StatusCodes.CREATED).cookie('jwt', token, cookieOptions).json(result)
 }
 
 const getOrderItemsByOrderId = async (req, res) => {
-    console.log(req.user)
-    const { order_id } = req.user
+    console.log("getOrderItemsByOrderId")
+    const { userQueryObject } = req.user
 
-    const result = await Order.query()
-        .where({ "order_item.order_id": order_id })
-        .join("order_item", function () {
-            this.on("order.id", "=", "order_item.order_id")
+    const order = await Order.query().where(userQueryObject)
+
+    if (!order[0])
+        throw new NotFoundError(
+            "Order not found."
+        )
+
+    const result = await OrderItem.query()
+        .select("order_item.*")
+        .where({ "order_item.order_id": order[0].id })
+        .join("order", function () {
+            this.on("order_item.order_id", "=", "order.id")
         })
 
-    res.status(StatusCodes.OK).json({ result })
+    res.status(StatusCodes.OK).json(result)
 }
 
 const updateOrderItemById = async (req, res) => {
-    const { orderId } = req.params
-    const {} = req.body
+    console.log("updateOrderItemById")
+    const { id } = req.params
+    const {quantity} = req.body
 
-    const order = await OrderItem.query().findByIdAndUpdate(
-        orderId,
-        {
-            /* updated order data */
-        },
-        { new: true }
-    )
+    const updatedOrderItem = await updateOrderItem(null, id, quantity) 
 
-    if (!order) {
-        throw new NotFoundError("Order.query() not found")
+    if (!updatedOrderItem) {
+        throw new NotFoundError("Order item not found.")
     }
 
-    res.status(StatusCodes.OK).json(order)
+    res.status(StatusCodes.OK).json(updatedOrderItem)
 }
 
 const deleteOrderItemById = async (req, res) => {
+    console.log("deleteOrderItemById")
     const { orderId } = req.params
     const order = await OrderItem.query().findByIdAndDelete(orderId)
 
     if (!order) {
-        throw new NotFoundError("Order.query() not found")
+        throw new NotFoundError("Order not found")
     }
 
     res.status(StatusCodes.NO_CONTENT).send()
