@@ -131,7 +131,7 @@ exports.up = function (knex) {
                 table.uuid("order_id").notNullable()
 
                 table.foreign("product_id").references("product.id")
-                table.foreign("order_id").references("order.id")
+                table.foreign("order_id").references("order.id").onDelete('CASCADE')
                 table.timestamps(true, true)
             })
     )

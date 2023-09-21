@@ -35,11 +35,13 @@ app.use(cookieParser())
 // routes
 const productRoutes = require("./src/product-related/routes")
 const userRoutes = require("./src/user-related/routes")
-
+const orderRoutes = require('./src/order-related/routes')
 const notFound = require("./src/utils/middleware/notFound")
 
 app.use("/api/v1/products", productRoutes)
 app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/orders", orderRoutes)
+
 app.use(notFound)
 
 // error handler

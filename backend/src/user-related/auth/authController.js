@@ -3,8 +3,7 @@ const User = require("../../utils/database/models/user")
 const { BadRequestError, NotFoundError } = require("../../utils/error")
 const { StatusCodes } = require("http-status-codes")
 const { getGoogleAuthTokens, getGoogleUser } = require("./authUtils")
-const {cookieOptions} = require('../../utils/cookieOptions')
-
+const { cookieOptions } = require("../../utils/cookieOptions")
 
 const googleSignIn = async (req, res) => {
     const code = req.query.code
@@ -66,13 +65,12 @@ const getGoogleOAuthURL = (req, res) => {
     res.redirect(url)
 }
 
-
 // creating custom user
 const register = async (req, res) => {
-    console.log(req.body);
+    console.log(req.body)
 
-    const {first_name, last_name, email, password} = req.body
-    
+    const { first_name, last_name, email, password } = req.body
+
     const user = await User.query().insert({
         first_name: first_name,
         last_name: last_name,
@@ -85,29 +83,25 @@ const register = async (req, res) => {
 
     const token = user.createJWT()
 
-    res.cookie('jwt', token, cookieOptions).redirect(
-            302,
-            process.env.FRONTEND_DOMAIN
-        )
+    res.cookie("jwt", token, cookieOptions).redirect(
+        302,
+        process.env.FRONTEND_DOMAIN
+    )
 }
 
+const login = async (req, res) => {
+    const user = await User.query().where({ email: req.body.email })
 
+    if (!user[0])
+        throw new NotFoundError("User with provided email does not exist.")
 
-const login = async (req, res)=>{
-    const user = await User.query().where({email: req.body.email})
-    
-    if(!user[0])
-        throw new NotFoundError('User with provided email does not exist.')
-
-    if(!user[0].comparePassword(req.body.password))
-        throw new BadRequestError('Invalid password.')
-
+    if (!user[0].comparePassword(req.body.password))
+        throw new BadRequestError("Invalid password.")
 
     const token = user[0].createJWT()
 
     res.status(StatusCodes.OK).cookie("jwt", token, cookieOptions).json()
 }
-
 
 const logout = async (req, res) => {}
 
@@ -116,5 +110,5 @@ module.exports = {
     register,
     getGoogleOAuthURL,
     login,
-    logout
+    logout,
 }

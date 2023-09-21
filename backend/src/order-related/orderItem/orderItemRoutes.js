@@ -9,10 +9,10 @@ const {
 } = require("./orderItemController")
 
 router
-    .route("/orders/items/:id")
+    .route("/items/:id")
     .patch(updateOrderItemById)
     .delete(deleteOrderItemById)
 
-router.route("/orders/items").get(getOrderItemsByOrderId).post(createOrderItem)
+router.route("/items").get(getOrderItemsByOrderId).post(createOrderItem)
 
 module.exports = router

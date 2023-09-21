@@ -5,7 +5,7 @@ const { Model } = require("objection")
 const { BadRequestError } = require("../../utils/error")
 
 /**
- *  Thah function have
+ *
  *
  */
 const handleCreate = async (product_id, quantity, userQueryObject) => {
@@ -20,13 +20,23 @@ const handleCreate = async (product_id, quantity, userQueryObject) => {
             status_id: 1,
         })
 
+        // if(order[0].status_id)
+        // console.log(order);
         let tmpOrder = order[0]
 
-        // if order cart in 'Checkout' state does not exist then create new order
-        if (!order[0]) {
-            const newOrder = await Order.query(trx).insert(userQueryObject)
+        // if order cart does not exist then create new order cart
+        if (!tmpOrder) {
+            const newOrder = await Order.query(trx).insertAndFetch(
+                userQueryObject
+            )
             tmpOrder = newOrder
         }
+        console.log(tmpOrder)
+        //  if order is not in 'Checkout' state throw error
+        if (tmpOrder.status_id !== 1)
+            throw new BadRequestError(
+                "Cannot update order that is not in Checkout state."
+            )
 
         return await createOrUpdateOrderItem(
             trx,
@@ -85,10 +95,12 @@ const createOrUpdateOrderItem = async (trx, order_id, product_id, quantity) => {
 const updateOrderItem = async (trx, order_item_id, quantity) => {
     console.log(order_item_id)
     console.log(quantity)
-    const updatedOrderItem = await OrderItem.query(trx).patchAndFetch({
-        id: order_item_id,
-        quantity: quantity,
-    })
+    const updatedOrderItem = await OrderItem.query(trx).patchAndFetchById(
+        order_item_id,
+        {
+            quantity: quantity,
+        }
+    )
     if (!updatedOrderItem)
         throw new BadRequestError("Cannot create new order item.")
 

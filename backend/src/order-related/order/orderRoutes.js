@@ -5,12 +5,15 @@ const {
     getOrderById,
     updateOrderById,
     deleteOrderById,
+    getOrder,
 } = require("./orderController")
 
 router
-    .route("/orders/:id")
-    .get(getOrderById)
+    .route("/:id")
     .patch(updateOrderById)
     .delete(deleteOrderById)
+    .get(getOrderById)
+
+router.route("/").get(getOrder)
 
 module.exports = router
