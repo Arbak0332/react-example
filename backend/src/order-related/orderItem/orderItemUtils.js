@@ -31,7 +31,7 @@ const handleCreate = async (product_id, quantity, userQueryObject) => {
             )
             tmpOrder = newOrder
         }
-        console.log(tmpOrder)
+        // console.log(tmpOrder)
         //  if order is not in 'Checkout' state throw error
         if (tmpOrder.status_id !== 1)
             throw new BadRequestError(
@@ -93,8 +93,8 @@ const createOrUpdateOrderItem = async (trx, order_id, product_id, quantity) => {
 }
 
 const updateOrderItem = async (trx, order_item_id, quantity) => {
-    console.log(order_item_id)
-    console.log(quantity)
+    // console.log(order_item_id)
+    // console.log(quantity)
     const updatedOrderItem = await OrderItem.query(trx).patchAndFetchById(
         order_item_id,
         {

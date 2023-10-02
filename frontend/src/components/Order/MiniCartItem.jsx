@@ -1,27 +1,27 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
 import CartContext from "../../context/CartContext"
 import file from '../../config.json'
 import PATH from "../../services/paths"
 import Button from 'react-bootstrap/Button'
+import getImageUrl from "../../services/getImageUrl"
 
 const Item = ({ lastItem }) => {
-
     return (
         <div className="mini_cart_item_wrapper">
             <div className="d-flex mt-2" >
-                <img src={`${file.IMAGE_STORAGE_URL}/products/${lastItem.image_name}`}
+                <img src={`${getImageUrl(lastItem.product.image_name)}`}
                     alt="aws image"
                     className="mini_cart_img" />
                 <div className="mini_cart_product_info_wrapper d-flex justify-content-center pt-2">
                     <div className="d-flex flex-column">
                         <div className="mini_cart_product_name">
-                            {lastItem.name}
+                            {lastItem.product.name}
                         </div>
                         <div className="mini_cart_product_info my-2">
-                            quantity: 1
+                            quantity: {lastItem.quantity}
                         </div>
-                        <h6>{lastItem.price}$</h6>
+                        <h6>{lastItem.product.price}$</h6>
                     </div>
                 </div>
             </div >
@@ -33,7 +33,7 @@ const Item = ({ lastItem }) => {
                     move to wish list
                 </a>
             </div>
-            <Link to={`${PATH.ORDER}`} className="product-link">
+            <Link to={`${PATH.CART}`} className="product-link">
                 <Button className="w-100 btn-custom--green mt-2">Go to checkout!</Button>
             </Link>
 
@@ -53,12 +53,7 @@ const EmptyItem = () => {
     )
 }
 
-const MiniCartItem = () => {
-
-    const { products } = useContext(CartContext)
-
-    const lastItem = products[products.length - 1]
-
+const MiniCartItem = ({lastItem}) => {    
     return (
         <>
             {

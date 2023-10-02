@@ -1,5 +1,5 @@
 const cookieOptions = {
-    maxAge: 3600 * 1000, // expires in 1 hour
+    maxAge: 3600 * 1000*2, // expires in 2 hours
     sameSite: "none",
     secure: false,
 }

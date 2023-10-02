@@ -13,8 +13,6 @@ import Logo from "./Logo";
 const Navbar = () => {
     const { visible } = useContext(CartContext)
 
-    const [userVisibility, setUserVisibility] = useState(false)
-
     const isLogged = () => {
         const token = Cookies.get('jwt')
 
@@ -57,10 +55,10 @@ const Navbar = () => {
                                 </a>
                             </li>
                             <li className={`dialog-container ${visible ? 'show-dialog':''}`} >
-                                <a className="nav-link"
-                                    href="/#">
+                                <Link className="nav-link"
+                                    to={paths.CART}>
                                     <i className="bi bi-cart3"></i>
-                                </a>
+                                </Link>
                                 <MiniCart />
                             </li>
                         </ul>

@@ -1,43 +1,82 @@
 import { createContext, useState } from "react";
-
+import config from '../config.json'
 const CartContext = createContext()
 
 export function CartContextProvider({ children }) {
-
-    const [visible, setVisibility] = useState(false)
+    /*
+        'products' state is reponsible for triggering useEffect hook
+        when contents of shopping cart are updated.  
+    */
     const [products, setProducts] = useState([])
 
-    const showMiniCartTimeout = ()=>{
+    /*
+        'visible' state is used in 'MiniCart'. 
+        If it is set to true, it shows 'MiniCartItem' component 
+    */
+    const [visible, setVisibility] = useState(false)
+
+    /*
+        Show 'MiniCartItem' component for 5 seconds
+    */
+    const showMiniCartTemporarily = () => {
         setVisibility(true)
         setTimeout(() => {
             setVisibility(false)
-        }, 3000);
+        }, 5000);
     }
 
-    const handleHover = ()=>{
-        if(products.length !== 0){
-            console.log('true');
-            setVisibility(true)
+    const getProducts = async () => {
+        try {
+            const response = await fetch(`${config.API_URL}/orders/items`, {
+                method: 'GET',
+                credentials: 'include',
+            })
+            const data = await response.json()
+            return data
+        } catch (error) {
+            console.error(error);
+            return []
         }
-        else{
-            console.log('false');
-            setVisibility(false)
+    }
+
+    const setProductsToCart = async ()=>{
+        const data = await getProducts()
+        setProducts(data)
+    }
+
+    /*
+     * Sends a POST request to add product to the user's shopping cart.
+    */
+    const addProduct = async (product, quantity) => {
+
+        try {
+
+            await fetch(`${config.API_URL}/orders/items`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    product_id: product.id,
+                    quantity: quantity
+                })
+            })
+        } catch (error) {
+            console.log(error);
         }
+
+
     }
 
-    const getProducts = ()=>{
-        const tmp = localStorage.getItem('products')
-        if(tmp)
-            setProducts()
+    const addProductAndShowMiniCart = async (product, quantity) => {
+        await addProduct(product, quantity)
+        await setProductsToCart()
+        showMiniCartTemporarily()
     }
 
-    const addProduct = (product, quantity)=>{
-        console.log(product);
-        setProducts(prev=> [...prev, product])
-        setVisibility(true)
-    }
-
-    const changeQuantity = (product, quantity)=>{
+    const changeQuantity = (product, quantity) => {
 
     }
 
@@ -46,11 +85,11 @@ export function CartContextProvider({ children }) {
     }
 
 
-    
+
 
 
     return (
-        <CartContext.Provider value={{ products, addProduct, deleteProduct, visible, setVisibility, handleHover, showMiniCartTimeout }}>
+        <CartContext.Provider value={{ setProductsToCart, products, getProducts, addProductAndShowMiniCart, deleteProduct, visible, setVisibility, showMiniCartTemporarily }}>
             {children}
         </CartContext.Provider>
     )

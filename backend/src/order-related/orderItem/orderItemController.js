@@ -4,9 +4,13 @@ const { handleCreate, updateOrderItem } = require("./orderItemUtils")
 const { cookieOptions } = require("../../utils/cookieOptions")
 const OrderItem = require("../../utils/database/models/order_item")
 const Order = require("../../utils/database/models/order")
+const Product = require("../../utils/database/models/product")
 const { getJWT } = require("../order/orderUtils")
+const { Model } = require("objection")
 
 const createOrderItem = async (req, res) => {
+    // console.log(req.user)
+    console.log(req.body)
     const { product_id, quantity } = req.body
     const { userQueryObject } = req.user
     const result = await handleCreate(product_id, quantity, userQueryObject)
@@ -20,19 +24,16 @@ const createOrderItem = async (req, res) => {
         .json(result)
 }
 
-const getOrderItemsByOrderId = async (req, res) => {
+const getOrderItemsWithProductsByUserId = async (req, res) => {
     const { userQueryObject } = req.user
-
+    console.log(userQueryObject);
     const order = await Order.query().where(userQueryObject)
 
-    if (!order[0]) throw new NotFoundError("Order not found.")
+    if (!order[0]) res.status(StatusCodes.OK).json()
 
     const result = await OrderItem.query()
-        .select("order_item.*")
-        .where({ "order_item.order_id": order[0].id })
-        .join("order", function () {
-            this.on("order_item.order_id", "=", "order.id")
-        })
+        .where("order_id", order[0].id)
+        .withGraphFetched("product")
 
     res.status(StatusCodes.OK).json(result)
 }
@@ -65,5 +66,5 @@ module.exports = {
     createOrderItem,
     updateOrderItemById,
     deleteOrderItemById,
-    getOrderItemsByOrderId,
+    getOrderItemsWithProductsByUserId,
 }

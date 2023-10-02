@@ -5,7 +5,7 @@ const {
     createOrderItem,
     updateOrderItemById,
     deleteOrderItemById,
-    getOrderItemsByOrderId,
+    getOrderItemsWithProductsByUserId,
 } = require("./orderItemController")
 
 router
@@ -13,6 +13,6 @@ router
     .patch(updateOrderItemById)
     .delete(deleteOrderItemById)
 
-router.route("/items").get(getOrderItemsByOrderId).post(createOrderItem)
+router.route("/items").get(getOrderItemsWithProductsByUserId).post(createOrderItem)
 
 module.exports = router

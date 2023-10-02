@@ -3,12 +3,15 @@ import CartContext from "../../context/CartContext"
 import Form from 'react-bootstrap/Form'
 const ManagePanel = ({product}) => {
     
-    const { showMiniCartTimeout, addProduct } = useContext(CartContext)
+    const { addProductAndShowMiniCart } = useContext(CartContext)
     const [quantity, setQuantity] = useState(1)
 
     const handleClick = ()=>{
-        showMiniCartTimeout()
-        addProduct(product)
+
+        const apiCall = async ()=>{
+            await addProductAndShowMiniCart(product, quantity)
+        }
+        apiCall()
     }
 
     return (
