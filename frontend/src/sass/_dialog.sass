@@ -1,0 +1,59 @@
+.dialog-wrapper
+    display: none
+    position: fixed
+    width: 300px
+    height: 230px
+    border: 2px solid $gray
+    top: 60px
+    right: 50px
+    z-index: 1050
+    background-color: white
+    justify-content: center
+
+.dialog-container:hover
+    .dialog-wrapper
+        display: block
+
+.dialog-container
+    .show-dialog
+        display: block
+
+.dialog-wrapper-user
+    @extend .dialog-wrapper
+    right: 180px
+
+.dialog-wrapper-mini-cart
+    @extend .dialog-wrapper
+
+.dialog-separator-wrapper
+    height: 20%
+    display: flex
+    align-items: end
+
+.dialog-separator
+    border-bottom: 1px solid #dcdede
+    width: 100%
+    float: left
+    z-index: 1
+    
+
+.mini_cart_img
+    height: 150px
+    width: 150px
+    object-fit: contain
+    padding: 10px
+
+.mini_cart_item_wrapper
+    width: 280px
+
+.mini_cart_product_name
+    font-size: 16px
+
+.mini_cart_product_info_wrapper
+    width: 100%
+
+.mini_cart_product_info
+    font-size: 12px
+
+.mini_cart_button
+    width: 100%

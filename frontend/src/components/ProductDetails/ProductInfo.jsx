@@ -34,7 +34,7 @@ const ProductInfo = () => {
                         <Rating />
                     </div>
                     <h5 className="mt-5 l-spacing">£{product.price}</h5>
-                    <ManagePanel />
+                    <ManagePanel product={product}/>
 
                 </div>
             </div>

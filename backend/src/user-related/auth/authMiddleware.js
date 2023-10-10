@@ -1,24 +1,20 @@
-var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const jwt = require("jsonwebtoken")
+const { UnauthenticatedError } = require("../../utils/error")
 
-// passport.serializeUser((user, done) => {
-//     done(null, user.id);
-// })
+const authentication = async (req, res, next) => {
+    const token = req.cookies.jwt
 
-// passport.deserializeUser((user, done) => {
-//     done(null, user);
-// })
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${process.env.BACKEND_DOMAIN}/api/v1/users/auth/google-callback`
-},
-    function (accessToken, refreshToken, profile, cb) {
-        // Register user here.
-        console.log(profile);
-        console.log(accessToken);
-        console.log(refreshToken);
-        cb(null, profile);
+        const { user_id, anonymous_user_id } = decoded
+        req.user = { user_id, anonymous_user_id }
+        next()
+    } catch (e) {
+        throw new UnauthenticatedError("No authorized to acces this route")
     }
-));
+}
+
+module.exports = {
+    authentication,
+}
